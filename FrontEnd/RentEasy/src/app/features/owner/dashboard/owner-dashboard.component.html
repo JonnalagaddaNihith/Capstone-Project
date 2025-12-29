@@ -1,0 +1,112 @@
+<div class="dashboard-page">
+  <div class="container">
+    <!-- Header -->
+    <div class="dashboard-header animate-slide-up">
+      <div class="header-content">
+        <h1>Welcome back, <span class="gradient-text">{{ authService.getCurrentUser()?.name }}</span>!</h1>
+        <p>Manage your properties and bookings from your dashboard</p>
+      </div>
+      <a routerLink="/owner/properties/new" class="btn btn-primary">
+        <mat-icon>add</mat-icon>
+        Add Property
+      </a>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid animate-fade-in">
+      <div class="stat-card">
+        <div class="stat-icon properties">
+          <mat-icon>home_work</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ properties.length }}</span>
+          <span class="stat-label">Total Properties</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon pending">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ pendingBookings.length }}</span>
+          <span class="stat-label">Pending Requests</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon approved">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ approvedBookings.length }}</span>
+          <span class="stat-label">Approved Bookings</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon revenue">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">₹{{ totalRevenue }}</span>
+          <span class="stat-label">Estimated Revenue</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions animate-slide-up">
+      <h2>Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/owner/properties" class="action-card">
+          <mat-icon>apartment</mat-icon>
+          <span>Manage Properties</span>
+          <p>View and edit your property listings</p>
+        </a>
+        <a routerLink="/owner/bookings" class="action-card">
+          <mat-icon>calendar_today</mat-icon>
+          <span>Booking Requests</span>
+          <p>Approve or reject tenant requests</p>
+        </a>
+        <a routerLink="/owner/properties/new" class="action-card">
+          <mat-icon>add_home_work</mat-icon>
+          <span>Add New Property</span>
+          <p>List a new property for rent</p>
+        </a>
+        <a routerLink="/properties" class="action-card">
+          <mat-icon>search</mat-icon>
+          <span>Browse Market</span>
+          <p>See other properties in the market</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Booking Requests -->
+    @if (pendingBookings.length > 0) {
+      <div class="recent-section animate-slide-up">
+        <div class="section-header">
+          <h2>Pending Requests</h2>
+          <a routerLink="/owner/bookings" class="view-all">
+            View All
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </div>
+        <div class="bookings-list">
+          @for (booking of pendingBookings.slice(0, 5); track booking.id) {
+            <div class="booking-item">
+              <div class="booking-info">
+                <h4>{{ booking.property_title }}</h4>
+                <p>{{ booking.tenant_name }} • {{ booking.tenant_email }}</p>
+              </div>
+              <div class="booking-dates">
+                <span>{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</span>
+              </div>
+              <span class="badge badge-pending">Pending</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

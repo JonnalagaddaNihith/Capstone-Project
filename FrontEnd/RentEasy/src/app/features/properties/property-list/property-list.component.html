@@ -1,0 +1,77 @@
+<div class="property-list-page">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header animate-slide-up">
+      <h1>Browse <span class="gradient-text">Properties</span></h1>
+      <p>Find your perfect rental from our curated collection of properties</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-section animate-fade-in">
+      <div class="filters-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Location</mat-label>
+          <mat-icon matPrefix>location_on</mat-icon>
+          <input matInput [(ngModel)]="locationSearch" placeholder="Enter city or area">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Min Rent (₹/day)</mat-label>
+          <mat-icon matPrefix>currency_rupee</mat-icon>
+          <input matInput type="number" [(ngModel)]="minRent" placeholder="0">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Max Rent (₹/day)</mat-label>
+          <mat-icon matPrefix>currency_rupee</mat-icon>
+          <input matInput type="number" [(ngModel)]="maxRent" placeholder="10000">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Amenities</mat-label>
+          <mat-icon matPrefix>wifi</mat-icon>
+          <input matInput [(ngModel)]="amenitySearch" placeholder="WiFi, AC, Parking...">
+        </mat-form-field>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-primary" (click)="applyFilters()">
+          <mat-icon>search</mat-icon>
+          Search
+        </button>
+        <button class="btn btn-secondary" (click)="clearFilters()">
+          <mat-icon>clear</mat-icon>
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-section">
+      @if (isLoading) {
+        <div class="loading-state">
+          <mat-spinner diameter="48"></mat-spinner>
+          <p>Loading properties...</p>
+        </div>
+      } @else if (filteredProperties.length === 0) {
+        <div class="empty-state">
+          <mat-icon>home_work</mat-icon>
+          <h3>No Properties Found</h3>
+          <p>Try adjusting your search filters or check back later.</p>
+          <button class="btn btn-primary" (click)="clearFilters()">Clear Filters</button>
+        </div>
+      } @else {
+        <div class="results-header">
+          <p class="results-count">
+            <strong>{{ filteredProperties.length }}</strong> properties found
+          </p>
+        </div>
+        <div class="properties-grid">
+          @for (property of filteredProperties; track property.id) {
+            <app-property-card [property]="property" class="animate-slide-up"></app-property-card>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

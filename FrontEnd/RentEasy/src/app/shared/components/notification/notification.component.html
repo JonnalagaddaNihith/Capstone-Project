@@ -1,0 +1,11 @@
+<div class="notification-container">
+  @for (notification of (notificationService.notifications$ | async); track notification.id) {
+    <div class="notification" [class]="'notification-' + notification.type" [@slideIn]>
+      <mat-icon>{{ getIcon(notification.type) }}</mat-icon>
+      <span class="notification-message">{{ notification.message }}</span>
+      <button class="close-btn" (click)="notificationService.dismiss(notification.id)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+</div>

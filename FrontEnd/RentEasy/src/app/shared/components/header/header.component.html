@@ -1,0 +1,113 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo -->
+    <a routerLink="/" class="logo">
+      <span class="logo-icon">🏠</span>
+      <span class="logo-text">RentEasy</span>
+    </a>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a routerLink="/properties" routerLinkActive="active" class="nav-link">
+        Browse Properties
+      </a>
+      
+      @if (authService.isOwner()) {
+        <a routerLink="/owner/dashboard" routerLinkActive="active" class="nav-link">
+          Dashboard
+        </a>
+        <a routerLink="/owner/properties" routerLinkActive="active" class="nav-link">
+          My Properties
+        </a>
+        <a routerLink="/owner/bookings" routerLinkActive="active" class="nav-link">
+          Booking Requests
+        </a>
+      }
+      
+      @if (authService.isTenant()) {
+        <a routerLink="/tenant/dashboard" routerLinkActive="active" class="nav-link">
+          Dashboard
+        </a>
+        <a routerLink="/tenant/bookings" routerLinkActive="active" class="nav-link">
+          My Bookings
+        </a>
+      }
+    </nav>
+
+    <!-- Auth Section -->
+    <div class="auth-section">
+      @if (authService.isAuthenticated()) {
+        @if (authService.getCurrentUser(); as user) {
+          <div class="user-menu">
+            <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+              <div class="user-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+              <span class="user-name">{{ user.name }}</span>
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #userMenu="matMenu" class="user-dropdown">
+              <div class="menu-header">
+                <span class="menu-name">{{ user.name }}</span>
+                <span class="menu-role badge" [class.badge-owner]="user.role === 'Owner'" [class.badge-tenant]="user.role === 'Tenant'">
+                  {{ user.role }}
+                </span>
+              </div>
+              <mat-divider></mat-divider>
+              @if (authService.isOwner()) {
+                <a mat-menu-item routerLink="/owner/dashboard">
+                  <mat-icon>dashboard</mat-icon>
+                  <span>Dashboard</span>
+                </a>
+                <a mat-menu-item routerLink="/owner/properties/new">
+                  <mat-icon>add_home</mat-icon>
+                  <span>Add Property</span>
+                </a>
+              }
+              @if (authService.isTenant()) {
+                <a mat-menu-item routerLink="/tenant/dashboard">
+                  <mat-icon>dashboard</mat-icon>
+                  <span>Dashboard</span>
+                </a>
+                <a mat-menu-item routerLink="/tenant/bookings">
+                  <mat-icon>event</mat-icon>
+                  <span>My Bookings</span>
+                </a>
+              }
+              <mat-divider></mat-divider>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+              </button>
+            </mat-menu>
+          </div>
+        }
+      } @else {
+        <a routerLink="/login" class="btn btn-secondary">Login</a>
+        <a routerLink="/register" class="btn btn-primary">Register</a>
+      }
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" mat-icon-button [matMenuTriggerFor]="mobileMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #mobileMenu="matMenu">
+      <a mat-menu-item routerLink="/properties">Browse Properties</a>
+      @if (authService.isAuthenticated()) {
+        @if (authService.isOwner()) {
+          <a mat-menu-item routerLink="/owner/dashboard">Dashboard</a>
+          <a mat-menu-item routerLink="/owner/properties">My Properties</a>
+          <a mat-menu-item routerLink="/owner/bookings">Booking Requests</a>
+        }
+        @if (authService.isTenant()) {
+          <a mat-menu-item routerLink="/tenant/dashboard">Dashboard</a>
+          <a mat-menu-item routerLink="/tenant/bookings">My Bookings</a>
+        }
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      } @else {
+        <a mat-menu-item routerLink="/login">Login</a>
+        <a mat-menu-item routerLink="/register">Register</a>
+      }
+    </mat-menu>
+  </div>
+</header>

@@ -1,0 +1,45 @@
+<div class="my-properties-page">
+  <div class="container">
+    <!-- Header -->
+    <div class="page-header animate-slide-up">
+      <div class="header-content">
+        <h1>My <span class="gradient-text">Properties</span></h1>
+        <p>Manage your property listings</p>
+      </div>
+      <a routerLink="/owner/properties/new" class="btn btn-primary">
+        <mat-icon>add</mat-icon>
+        Add Property
+      </a>
+    </div>
+
+    <!-- Properties Grid -->
+    @if (isLoading) {
+      <div class="loading-state">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p>Loading your properties...</p>
+      </div>
+    } @else if (properties.length === 0) {
+      <div class="empty-state">
+        <mat-icon>home_work</mat-icon>
+        <h3>No Properties Yet</h3>
+        <p>You haven't listed any properties. Start by adding your first property!</p>
+        <a routerLink="/owner/properties/new" class="btn btn-primary">
+          <mat-icon>add</mat-icon>
+          Add Your First Property
+        </a>
+      </div>
+    } @else {
+      <div class="properties-grid">
+        @for (property of properties; track property.id) {
+          <app-property-card 
+            [property]="property" 
+            [showActions]="true"
+            (edit)="onEditProperty($event)"
+            (delete)="onDeleteProperty($event)"
+            class="animate-slide-up">
+          </app-property-card>
+        }
+      </div>
+    }
+  </div>
+</div>

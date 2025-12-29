@@ -1,0 +1,66 @@
+<a [routerLink]="['/properties', property.id]" class="property-card">
+  <!-- Image Section -->
+  <div class="card-image">
+    @if (currentImage) {
+      <img [src]="'data:image/jpeg;base64,' + currentImage" [alt]="property.title" />
+      @if (photos.length > 1) {
+        <button class="nav-btn prev" (click)="prevImage($event)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button class="nav-btn next" (click)="nextImage($event)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <div class="image-dots">
+          @for (photo of photos; track $index) {
+            <span class="dot" [class.active]="$index === currentImageIndex"></span>
+          }
+        </div>
+      }
+    } @else {
+      <div class="no-image">
+        <mat-icon>home</mat-icon>
+        <span>No Image</span>
+      </div>
+    }
+  </div>
+
+  <!-- Content Section -->
+  <div class="card-content">
+    <div class="card-header">
+      <h3 class="card-title">{{ property.title }}</h3>
+      <div class="card-price">
+        <span class="price-amount">₹{{ property.rent_per_day }}</span>
+        <span class="price-period">/day</span>
+      </div>
+    </div>
+
+    <div class="card-location">
+      <mat-icon>location_on</mat-icon>
+      <span>{{ property.location }}</span>
+    </div>
+
+    @if (amenitiesList.length > 0) {
+      <div class="card-amenities">
+        @for (amenity of amenitiesList.slice(0, 4); track amenity) {
+          <span class="amenity-chip">{{ amenity }}</span>
+        }
+        @if (amenitiesList.length > 4) {
+          <span class="amenity-more">+{{ amenitiesList.length - 4 }} more</span>
+        }
+      </div>
+    }
+
+    @if (showActions) {
+      <div class="card-actions">
+        <button class="btn btn-secondary" (click)="onEdit($event)">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button class="btn btn-danger" (click)="onDelete($event)">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </div>
+    }
+  </div>
+</a>

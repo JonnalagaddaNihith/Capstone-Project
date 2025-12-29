@@ -1,0 +1,117 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content animate-slide-up">
+      <h1>Find Your Perfect <span class="gradient-text">Rental Home</span></h1>
+      <p>Discover thousands of rental properties tailored to your needs. Whether you're looking for a cozy apartment or a spacious house, we've got you covered.</p>
+      <div class="hero-buttons">
+        <a routerLink="/properties" class="btn btn-primary">
+          <mat-icon>search</mat-icon>
+          Browse Properties
+        </a>
+        <a routerLink="/register" class="btn btn-outline">
+          List Your Property
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Properties</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">1000+</span>
+          <span class="stat-label">Happy Tenants</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">200+</span>
+          <span class="stat-label">Property Owners</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image animate-fade-in">
+      <div class="floating-card card-1">
+        <mat-icon>home</mat-icon>
+        <span>Modern Apartments</span>
+      </div>
+      <div class="floating-card card-2">
+        <mat-icon>verified</mat-icon>
+        <span>Verified Listings</span>
+      </div>
+      <div class="floating-card card-3">
+        <mat-icon>security</mat-icon>
+        <span>Secure Booking</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Why Choose <span class="gradient-text">RentEasy</span>?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <mat-icon>search</mat-icon>
+          </div>
+          <h3>Easy Search</h3>
+          <p>Find properties by location, budget, and amenities with our powerful search filters.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <mat-icon>verified_user</mat-icon>
+          </div>
+          <h3>Verified Owners</h3>
+          <p>All property owners are verified to ensure safe and trustworthy transactions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <mat-icon>bolt</mat-icon>
+          </div>
+          <h3>Instant Booking</h3>
+          <p>Book your favorite property instantly and get real-time status updates.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <mat-icon>support_agent</mat-icon>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Our dedicated support team is always ready to help you with any queries.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Properties -->
+  @if (featuredProperties.length > 0) {
+    <section class="featured-properties">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Featured <span class="gradient-text">Properties</span></h2>
+          <a routerLink="/properties" class="view-all-link">
+            View All
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </div>
+        <div class="properties-grid">
+          @for (property of featuredProperties; track property.id) {
+            <app-property-card [property]="property"></app-property-card>
+          }
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Find Your New Home?</h2>
+        <p>Join thousands of happy tenants who found their perfect rental through RentEasy.</p>
+        <div class="cta-buttons">
+          <a routerLink="/register" class="btn btn-primary">Get Started Free</a>
+          <a routerLink="/properties" class="btn btn-secondary">Explore Properties</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
