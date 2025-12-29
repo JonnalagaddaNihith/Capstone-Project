@@ -1,108 +1,130 @@
-<div class="property-form-page">
+<div class="py-5 bg-light min-vh-100">
   <div class="container">
-    <div class="form-container animate-slide-up">
-      <div class="form-header">
-        <a routerLink="/owner/properties" class="back-link">
-          <mat-icon>arrow_back</mat-icon>
+    <div class="row justify-content-center">
+      <div class="col-lg-8 animate-slide-up">
+        <!-- Back Link -->
+        <a routerLink="/owner/properties" class="btn btn-outline-secondary btn-sm mb-4 d-inline-flex align-items-center gap-1">
+          <mat-icon style="font-size: 18px; width: 18px; height: 18px;">arrow_back</mat-icon>
           Back to Properties
         </a>
-        <h1>{{ isEditMode ? 'Edit' : 'Add New' }} <span class="gradient-text">Property</span></h1>
-        <p>{{ isEditMode ? 'Update your property details' : 'Fill in the details to list your property' }}</p>
-      </div>
 
-      <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" class="property-form">
-        <!-- Photos Section -->
-        <div class="form-section">
-          <h3>Property Photos</h3>
-          <p class="section-desc">Add up to 4 photos of your property</p>
-          <div class="photos-grid">
-            @for (photo of photos; track $index) {
-              <div class="photo-upload" [class.has-photo]="photo">
-                @if (photo) {
-                  <img [src]="'data:image/jpeg;base64,' + photo" alt="Property photo">
-                  <button type="button" class="remove-btn" (click)="removePhoto($index)">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                } @else {
-                  <label class="upload-label">
-                    <mat-icon>add_photo_alternate</mat-icon>
-                    <span>Add Photo {{ $index + 1 }}</span>
-                    <input type="file" accept="image/*" (change)="onFileSelect($event, $index)">
-                  </label>
+        <!-- Header -->
+        <div class="mb-4">
+          <h2>{{ isEditMode ? 'Edit' : 'Add New' }} <span class="gradient-text">Property</span></h2>
+          <p class="text-muted">{{ isEditMode ? 'Update your property details' : 'Fill in the details to list your property' }}</p>
+        </div>
+
+        <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+          <!-- Photos Section -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <h5 class="mb-1">Property Photos</h5>
+              <p class="text-muted small mb-3">Add up to 4 photos of your property</p>
+              <div class="row g-3">
+                @for (photo of photos; track $index) {
+                  <div class="col-6 col-md-3">
+                    <div class="border rounded position-relative" style="aspect-ratio: 4/3; overflow: hidden;">
+                      @if (photo) {
+                        <img [src]="photo" alt="Property photo" class="w-100 h-100 object-fit-cover">
+                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle p-1" 
+                                (click)="removePhoto($index)">
+                          <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
+                        </button>
+                      } @else {
+                        <label class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer bg-light text-muted"
+                               style="cursor: pointer;">
+                          <mat-icon>add_photo_alternate</mat-icon>
+                          <small>Photo {{ $index + 1 }}</small>
+                          <input type="file" accept="image/*" (change)="onFileSelect($event, $index)" class="d-none">
+                        </label>
+                      }
+                    </div>
+                  </div>
                 }
               </div>
-            }
-          </div>
-        </div>
-
-        <!-- Basic Info -->
-        <div class="form-section">
-          <h3>Basic Information</h3>
-          
-          <mat-form-field appearance="outline">
-            <mat-label>Property Title</mat-label>
-            <input matInput formControlName="title" placeholder="e.g., Cozy 2BHK Apartment near MG Road">
-            @if (propertyForm.get('title')?.hasError('required') && propertyForm.get('title')?.touched) {
-              <mat-error>Title is required</mat-error>
-            }
-            @if (propertyForm.get('title')?.hasError('minlength') && propertyForm.get('title')?.touched) {
-              <mat-error>Title must be at least 5 characters</mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="property_description" rows="4" 
-                      placeholder="Describe your property, its features, and nearby amenities..."></textarea>
-            @if (propertyForm.get('property_description')?.hasError('required') && propertyForm.get('property_description')?.touched) {
-              <mat-error>Description is required</mat-error>
-            }
-            @if (propertyForm.get('property_description')?.hasError('minlength') && propertyForm.get('property_description')?.touched) {
-              <mat-error>Description must be at least 20 characters</mat-error>
-            }
-          </mat-form-field>
-
-          <div class="form-row">
-            <mat-form-field appearance="outline">
-              <mat-label>Rent (₹ per day)</mat-label>
-              <input matInput type="number" formControlName="rent_per_day" placeholder="1500">
-              <span matPrefix>₹&nbsp;</span>
-              @if (propertyForm.get('rent_per_day')?.hasError('required') && propertyForm.get('rent_per_day')?.touched) {
-                <mat-error>Rent is required</mat-error>
-              }
-              @if (propertyForm.get('rent_per_day')?.hasError('min') && propertyForm.get('rent_per_day')?.touched) {
-                <mat-error>Rent must be at least ₹1</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Location</mat-label>
-              <input matInput formControlName="location" placeholder="e.g., Bangalore, Karnataka">
-              @if (propertyForm.get('location')?.hasError('required') && propertyForm.get('location')?.touched) {
-                <mat-error>Location is required</mat-error>
-              }
-            </mat-form-field>
+            </div>
           </div>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Amenities</mat-label>
-            <input matInput formControlName="amenities" placeholder="WiFi, AC, Parking, Kitchen, TV (comma separated)">
-            <mat-hint>Enter amenities separated by commas</mat-hint>
-          </mat-form-field>
-        </div>
+          <!-- Basic Info -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <h5 class="mb-4">Basic Information</h5>
+              
+              <div class="mb-3">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Property Title</mat-label>
+                  <input matInput formControlName="title" placeholder="e.g., Cozy 2BHK Apartment near MG Road">
+                  @if (propertyForm.get('title')?.hasError('required') && propertyForm.get('title')?.touched) {
+                    <mat-error>Title is required</mat-error>
+                  }
+                  @if (propertyForm.get('title')?.hasError('minlength') && propertyForm.get('title')?.touched) {
+                    <mat-error>Title must be at least 5 characters</mat-error>
+                  }
+                </mat-form-field>
+              </div>
 
-        <!-- Submit -->
-        <div class="form-actions">
-          <a routerLink="/owner/properties" class="btn btn-secondary">Cancel</a>
-          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-            @if (isLoading) {
-              <ng-container><mat-spinner diameter="20"></mat-spinner> {{ isEditMode ? 'Updating...' : 'Creating...' }}</ng-container>
-            } @else {
-              <ng-container><mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon> {{ isEditMode ? 'Update Property' : 'Create Property' }}</ng-container>
-            }
-          </button>
-        </div>
-      </form>
+              <div class="mb-3">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput formControlName="property_description" rows="4" 
+                            placeholder="Describe your property, its features, and nearby amenities..."></textarea>
+                  @if (propertyForm.get('property_description')?.hasError('required') && propertyForm.get('property_description')?.touched) {
+                    <mat-error>Description is required</mat-error>
+                  }
+                  @if (propertyForm.get('property_description')?.hasError('minlength') && propertyForm.get('property_description')?.touched) {
+                    <mat-error>Description must be at least 20 characters</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Rent (₹ per day)</mat-label>
+                    <input matInput type="number" formControlName="rent_per_day" placeholder="1500">
+                    <span matPrefix>₹&nbsp;</span>
+                    @if (propertyForm.get('rent_per_day')?.hasError('required') && propertyForm.get('rent_per_day')?.touched) {
+                      <mat-error>Rent is required</mat-error>
+                    }
+                    @if (propertyForm.get('rent_per_day')?.hasError('min') && propertyForm.get('rent_per_day')?.touched) {
+                      <mat-error>Rent must be at least ₹1</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Location</mat-label>
+                    <input matInput formControlName="location" placeholder="e.g., Bangalore, Karnataka">
+                    @if (propertyForm.get('location')?.hasError('required') && propertyForm.get('location')?.touched) {
+                      <mat-error>Location is required</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Amenities</mat-label>
+                  <input matInput formControlName="amenities" placeholder="WiFi, AC, Parking, Kitchen, TV (comma separated)">
+                  <mat-hint>Enter amenities separated by commas</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-flex gap-3 justify-content-end">
+            <a routerLink="/owner/properties" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary d-flex align-items-center gap-2" [disabled]="isLoading">
+              @if (isLoading) {
+                <ng-container><mat-spinner diameter="20"></mat-spinner> {{ isEditMode ? 'Updating...' : 'Creating...' }}</ng-container>
+              } @else {
+                <ng-container><mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon> {{ isEditMode ? 'Update Property' : 'Create Property' }}</ng-container>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

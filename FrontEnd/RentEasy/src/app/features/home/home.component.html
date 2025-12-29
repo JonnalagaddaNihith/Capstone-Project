@@ -1,81 +1,95 @@
 <div class="home-page">
   <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content animate-slide-up">
-      <h1>Find Your Perfect <span class="gradient-text">Rental Home</span></h1>
-      <p>Discover thousands of rental properties tailored to your needs. Whether you're looking for a cozy apartment or a spacious house, we've got you covered.</p>
-      <div class="hero-buttons">
-        <a routerLink="/properties" class="btn btn-primary">
-          <mat-icon>search</mat-icon>
-          Browse Properties
-        </a>
-        <a routerLink="/register" class="btn btn-outline">
-          List Your Property
-        </a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-number">500+</span>
-          <span class="stat-label">Properties</span>
+  <section class="hero bg-gradient-primary text-white py-5">
+    <div class="container">
+      <div class="row align-items-center min-vh-75">
+        <div class="col-lg-6 animate-slide-up">
+          <h1 class="display-4 fw-bold mb-4">Find Your Perfect <span class="text-warning">Rental Home</span></h1>
+          <p class="lead mb-4 opacity-75">Discover thousands of rental properties tailored to your needs. Whether you're looking for a cozy apartment or a spacious house, we've got you covered.</p>
+          <div class="d-flex gap-3 flex-wrap mb-5">
+            <a routerLink="/properties" class="btn btn-light btn-lg d-flex align-items-center gap-2">
+              <mat-icon>search</mat-icon>
+              Browse Properties
+            </a>
+            <a routerLink="/register" class="btn btn-outline-light btn-lg">
+              List Your Property
+            </a>
+          </div>
+          <div class="row g-4">
+            <div class="col-4 text-center">
+              <div class="h2 fw-bold mb-0">500+</div>
+              <small class="opacity-75">Properties</small>
+            </div>
+            <div class="col-4 text-center">
+              <div class="h2 fw-bold mb-0">1000+</div>
+              <small class="opacity-75">Happy Tenants</small>
+            </div>
+            <div class="col-4 text-center">
+              <div class="h2 fw-bold mb-0">200+</div>
+              <small class="opacity-75">Property Owners</small>
+            </div>
+          </div>
         </div>
-        <div class="stat">
-          <span class="stat-number">1000+</span>
-          <span class="stat-label">Happy Tenants</span>
+        <div class="col-lg-6 d-none d-lg-block animate-fade-in">
+          <div class="position-relative">
+            <div class="floating-card position-absolute bg-white text-dark rounded-3 shadow-lg p-3 d-flex align-items-center gap-2" style="top: 20%; left: 10%;">
+              <mat-icon class="text-primary">home</mat-icon>
+              <span class="fw-medium">Modern Apartments</span>
+            </div>
+            <div class="floating-card position-absolute bg-white text-dark rounded-3 shadow-lg p-3 d-flex align-items-center gap-2" style="top: 50%; right: 10%;">
+              <mat-icon class="text-success">verified</mat-icon>
+              <span class="fw-medium">Verified Listings</span>
+            </div>
+            <div class="floating-card position-absolute bg-white text-dark rounded-3 shadow-lg p-3 d-flex align-items-center gap-2" style="bottom: 10%; left: 20%;">
+              <mat-icon class="text-info">security</mat-icon>
+              <span class="fw-medium">Secure Booking</span>
+            </div>
+          </div>
         </div>
-        <div class="stat">
-          <span class="stat-number">200+</span>
-          <span class="stat-label">Property Owners</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-image animate-fade-in">
-      <div class="floating-card card-1">
-        <mat-icon>home</mat-icon>
-        <span>Modern Apartments</span>
-      </div>
-      <div class="floating-card card-2">
-        <mat-icon>verified</mat-icon>
-        <span>Verified Listings</span>
-      </div>
-      <div class="floating-card card-3">
-        <mat-icon>security</mat-icon>
-        <span>Secure Booking</span>
       </div>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section class="features">
-    <div class="container">
-      <h2 class="section-title">Why Choose <span class="gradient-text">RentEasy</span>?</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <mat-icon>search</mat-icon>
+  <section class="py-5 bg-light">
+    <div class="container py-4">
+      <h2 class="text-center mb-5">Why Choose <span class="gradient-text">RentEasy</span>?</h2>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 text-center p-4 border-0">
+            <div class="rounded-circle bg-primary bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+              <mat-icon class="text-primary">search</mat-icon>
+            </div>
+            <h5>Easy Search</h5>
+            <p class="text-muted small mb-0">Find properties by location, budget, and amenities with our powerful search filters.</p>
           </div>
-          <h3>Easy Search</h3>
-          <p>Find properties by location, budget, and amenities with our powerful search filters.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <mat-icon>verified_user</mat-icon>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 text-center p-4 border-0">
+            <div class="rounded-circle bg-success bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+              <mat-icon class="text-success">verified_user</mat-icon>
+            </div>
+            <h5>Verified Owners</h5>
+            <p class="text-muted small mb-0">All property owners are verified to ensure safe and trustworthy transactions.</p>
           </div>
-          <h3>Verified Owners</h3>
-          <p>All property owners are verified to ensure safe and trustworthy transactions.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <mat-icon>bolt</mat-icon>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 text-center p-4 border-0">
+            <div class="rounded-circle bg-warning bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+              <mat-icon class="text-warning">bolt</mat-icon>
+            </div>
+            <h5>Instant Booking</h5>
+            <p class="text-muted small mb-0">Book your favorite property instantly and get real-time status updates.</p>
           </div>
-          <h3>Instant Booking</h3>
-          <p>Book your favorite property instantly and get real-time status updates.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <mat-icon>support_agent</mat-icon>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 text-center p-4 border-0">
+            <div class="rounded-circle bg-info bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+              <mat-icon class="text-info">support_agent</mat-icon>
+            </div>
+            <h5>24/7 Support</h5>
+            <p class="text-muted small mb-0">Our dedicated support team is always ready to help you with any queries.</p>
           </div>
-          <h3>24/7 Support</h3>
-          <p>Our dedicated support team is always ready to help you with any queries.</p>
         </div>
       </div>
     </div>
@@ -83,18 +97,20 @@
 
   <!-- Featured Properties -->
   @if (featuredProperties.length > 0) {
-    <section class="featured-properties">
+    <section class="py-5">
       <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Featured <span class="gradient-text">Properties</span></h2>
-          <a routerLink="/properties" class="view-all-link">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Featured <span class="gradient-text">Properties</span></h2>
+          <a routerLink="/properties" class="btn btn-outline-primary d-flex align-items-center gap-1">
             View All
             <mat-icon>arrow_forward</mat-icon>
           </a>
         </div>
-        <div class="properties-grid">
+        <div class="row g-4">
           @for (property of featuredProperties; track property.id) {
-            <app-property-card [property]="property"></app-property-card>
+            <div class="col-md-6 col-lg-4">
+              <app-property-card [property]="property"></app-property-card>
+            </div>
           }
         </div>
       </div>
@@ -102,15 +118,13 @@
   }
 
   <!-- CTA Section -->
-  <section class="cta">
-    <div class="container">
-      <div class="cta-content">
-        <h2>Ready to Find Your New Home?</h2>
-        <p>Join thousands of happy tenants who found their perfect rental through RentEasy.</p>
-        <div class="cta-buttons">
-          <a routerLink="/register" class="btn btn-primary">Get Started Free</a>
-          <a routerLink="/properties" class="btn btn-secondary">Explore Properties</a>
-        </div>
+  <section class="py-5 bg-gradient-primary text-white">
+    <div class="container text-center py-4">
+      <h2 class="mb-3">Ready to Find Your New Home?</h2>
+      <p class="lead opacity-75 mb-4">Join thousands of happy tenants who found their perfect rental through RentEasy.</p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a routerLink="/register" class="btn btn-light btn-lg">Get Started Free</a>
+        <a routerLink="/properties" class="btn btn-outline-light btn-lg">Explore Properties</a>
       </div>
     </div>
   </section>

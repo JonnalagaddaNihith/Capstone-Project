@@ -1,63 +1,70 @@
-<a [routerLink]="['/properties', property.id]" class="property-card">
+<a [routerLink]="['/properties', property.id]" class="card h-100 text-decoration-none overflow-hidden">
   <!-- Image Section -->
-  <div class="card-image">
+  <div class="position-relative" style="height: 200px;">
     @if (currentImage) {
-      <img [src]="'data:image/jpeg;base64,' + currentImage" [alt]="property.title" />
+      <img [src]="currentImage" [alt]="property.title" 
+           class="w-100 h-100 object-fit-cover">
       @if (photos.length > 1) {
-        <button class="nav-btn prev" (click)="prevImage($event)">
+        <button class="btn btn-light btn-sm position-absolute start-0 top-50 translate-middle-y ms-2 rounded-circle p-1" 
+                (click)="prevImage($event)">
           <mat-icon>chevron_left</mat-icon>
         </button>
-        <button class="nav-btn next" (click)="nextImage($event)">
+        <button class="btn btn-light btn-sm position-absolute end-0 top-50 translate-middle-y me-2 rounded-circle p-1" 
+                (click)="nextImage($event)">
           <mat-icon>chevron_right</mat-icon>
         </button>
-        <div class="image-dots">
+        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-2 d-flex gap-1">
           @for (photo of photos; track $index) {
-            <span class="dot" [class.active]="$index === currentImageIndex"></span>
+            <span class="rounded-circle" 
+                  [class]="$index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'"
+                  style="width: 8px; height: 8px;"></span>
           }
         </div>
       }
     } @else {
-      <div class="no-image">
+      <div class="w-100 h-100 bg-light d-flex flex-column align-items-center justify-content-center text-muted">
         <mat-icon>home</mat-icon>
-        <span>No Image</span>
+        <small>No Image</small>
       </div>
     }
   </div>
 
   <!-- Content Section -->
-  <div class="card-content">
-    <div class="card-header">
-      <h3 class="card-title">{{ property.title }}</h3>
-      <div class="card-price">
-        <span class="price-amount">₹{{ property.rent_per_day }}</span>
-        <span class="price-period">/day</span>
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <h6 class="card-title text-dark mb-0 text-truncate" style="max-width: 60%;">{{ property.title }}</h6>
+      <div class="text-end">
+        <span class="fw-bold text-primary">₹{{ property.rent_per_day }}</span>
+        <small class="text-muted">/day</small>
       </div>
     </div>
 
-    <div class="card-location">
-      <mat-icon>location_on</mat-icon>
-      <span>{{ property.location }}</span>
+    <div class="d-flex align-items-center text-muted small mb-3">
+      <mat-icon class="me-1" style="font-size: 16px; width: 16px; height: 16px;">location_on</mat-icon>
+      <span class="text-truncate">{{ property.location }}</span>
     </div>
 
     @if (amenitiesList.length > 0) {
-      <div class="card-amenities">
-        @for (amenity of amenitiesList.slice(0, 4); track amenity) {
-          <span class="amenity-chip">{{ amenity }}</span>
+      <div class="d-flex flex-wrap gap-1 mb-3">
+        @for (amenity of amenitiesList.slice(0, 3); track amenity) {
+          <span class="badge bg-light text-muted small">{{ amenity }}</span>
         }
-        @if (amenitiesList.length > 4) {
-          <span class="amenity-more">+{{ amenitiesList.length - 4 }} more</span>
+        @if (amenitiesList.length > 3) {
+          <span class="badge bg-primary bg-opacity-10 text-primary small">+{{ amenitiesList.length - 3 }}</span>
         }
       </div>
     }
 
     @if (showActions) {
-      <div class="card-actions">
-        <button class="btn btn-secondary" (click)="onEdit($event)">
-          <mat-icon>edit</mat-icon>
+      <div class="d-flex gap-2 pt-2 border-top">
+        <button class="btn btn-outline-primary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1" 
+                (click)="onEdit($event)">
+          <mat-icon style="font-size: 16px; width: 16px; height: 16px;">edit</mat-icon>
           Edit
         </button>
-        <button class="btn btn-danger" (click)="onDelete($event)">
-          <mat-icon>delete</mat-icon>
+        <button class="btn btn-outline-danger btn-sm flex-fill d-flex align-items-center justify-content-center gap-1" 
+                (click)="onDelete($event)">
+          <mat-icon style="font-size: 16px; width: 16px; height: 16px;">delete</mat-icon>
           Delete
         </button>
       </div>

@@ -21,7 +21,6 @@ import { Booking } from '../../../shared/models/booking.model';
     MatTabsModule
   ],
   templateUrl: './my-bookings.component.html',
-  styleUrl: './my-bookings.component.css'
 })
 export class MyBookingsComponent implements OnInit {
   bookings: Booking[] = [];

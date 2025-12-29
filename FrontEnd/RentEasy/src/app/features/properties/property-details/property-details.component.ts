@@ -32,8 +32,7 @@ import { Property } from '../../../shared/models/property.model';
     MatInputModule,
     MatNativeDateModule
   ],
-  templateUrl: './property-details.component.html',
-  styleUrl: './property-details.component.css'
+  templateUrl: './property-details.component.html'
 })
 export class PropertyDetailsComponent implements OnInit {
   property: Property | null = null;

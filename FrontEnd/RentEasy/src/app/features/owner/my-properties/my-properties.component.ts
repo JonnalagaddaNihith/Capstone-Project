@@ -22,8 +22,7 @@ import { Property } from '../../../shared/models/property.model';
     MatDialogModule,
     PropertyCardComponent
   ],
-  templateUrl: './my-properties.component.html',
-  styleUrl: './my-properties.component.css'
+  templateUrl: './my-properties.component.html'
 })
 export class MyPropertiesComponent implements OnInit {
   properties: Property[] = [];

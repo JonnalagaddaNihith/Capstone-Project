@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AuthService } from '../../../core/services/auth.service';
-import { NotificationService } from '../../../core/services/notification.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { AppState, AuthActions, selectIsLoading, selectAuthError } from '../../../store';
 
 @Component({
   selector: 'app-register',
@@ -23,27 +25,30 @@ import { NotificationService } from '../../../core/services/notification.service
     MatIconModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  templateUrl: './register.component.html'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
+  private store = inject(Store<AppState>);
+  private fb = inject(FormBuilder);
+
   registerForm: FormGroup;
-  isLoading = false;
   hidePassword = true;
   selectedRole: 'Owner' | 'Tenant' = 'Tenant';
+  
+  isLoading$: Observable<boolean> = this.store.select(selectIsLoading);
+  error$: Observable<string | null> = this.store.select(selectAuthError);
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private notificationService: NotificationService,
-    private router: Router
-  ) {
+  constructor() {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['Tenant', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(AuthActions.clearAuthError());
   }
 
   selectRole(role: 'Owner' | 'Tenant'): void {
@@ -57,23 +62,7 @@ export class RegisterComponent {
       return;
     }
 
-    this.isLoading = true;
     const userData = this.registerForm.value;
-
-    this.authService.register(userData).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        if (response.success) {
-          this.notificationService.success('Account created successfully! Please login.');
-          this.router.navigate(['/login']);
-        } else {
-          this.notificationService.error(response.message || 'Registration failed');
-        }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.notificationService.error(error.error?.message || 'Registration failed. Please try again.');
-      }
-    });
+    this.store.dispatch(AuthActions.register({ userData }));
   }
 }

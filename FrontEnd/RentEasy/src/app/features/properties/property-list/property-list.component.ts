@@ -28,7 +28,6 @@ import { Property, PropertyFilters } from '../../../shared/models/property.model
     PropertyCardComponent
   ],
   templateUrl: './property-list.component.html',
-  styleUrl: './property-list.component.css'
 })
 export class PropertyListComponent implements OnInit {
   properties: Property[] = [];

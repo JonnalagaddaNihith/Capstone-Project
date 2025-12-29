@@ -1,99 +1,120 @@
-<div class="dashboard-page">
+<div class="py-5 bg-light min-vh-100">
   <div class="container">
     <!-- Header -->
-    <div class="dashboard-header animate-slide-up">
-      <div class="header-content">
-        <h1>Welcome, <span class="gradient-text">{{ authService.getCurrentUser()?.name }}</span>!</h1>
-        <p>Find your perfect rental home</p>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-slide-up">
+      <div>
+        <h2 class="mb-1">Welcome, <span class="gradient-text">{{ authService.getCurrentUser()?.name }}</span>!</h2>
+        <p class="text-muted mb-0">Find your perfect rental home</p>
       </div>
-      <a routerLink="/properties" class="btn btn-primary">
+      <a routerLink="/properties" class="btn btn-primary d-flex align-items-center gap-2">
         <mat-icon>search</mat-icon>
         Browse Properties
       </a>
     </div>
 
     <!-- Stats Cards -->
-    <div class="stats-grid animate-fade-in">
-      <div class="stat-card">
-        <div class="stat-icon total">
-          <mat-icon>event_note</mat-icon>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ bookings.length }}</span>
-          <span class="stat-label">Total Bookings</span>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon pending">
-          <mat-icon>pending_actions</mat-icon>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ pendingBookings.length }}</span>
-          <span class="stat-label">Pending</span>
+    <div class="row g-4 mb-5 animate-fade-in">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-primary bg-opacity-10 p-3">
+              <mat-icon class="text-primary">event_note</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">{{ bookings.length }}</h3>
+              <small class="text-muted">Total Bookings</small>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon approved">
-          <mat-icon>check_circle</mat-icon>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+              <mat-icon class="text-warning">pending_actions</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">{{ pendingBookings.length }}</h3>
+              <small class="text-muted">Pending</small>
+            </div>
+          </div>
         </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ approvedBookings.length }}</span>
-          <span class="stat-label">Approved</span>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-success bg-opacity-10 p-3">
+              <mat-icon class="text-success">check_circle</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">{{ approvedBookings.length }}</h3>
+              <small class="text-muted">Approved</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Quick Actions -->
-    <div class="quick-actions animate-slide-up">
-      <h2>Quick Actions</h2>
-      <div class="actions-grid">
-        <a routerLink="/properties" class="action-card">
-          <mat-icon>search</mat-icon>
-          <span>Find Properties</span>
-          <p>Browse available rentals</p>
-        </a>
-        <a routerLink="/tenant/bookings" class="action-card">
-          <mat-icon>history</mat-icon>
-          <span>My Bookings</span>
-          <p>View booking history</p>
-        </a>
+    <div class="mb-5 animate-slide-up">
+      <h5 class="mb-3">Quick Actions</h5>
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <a routerLink="/properties" class="card h-100 text-decoration-none border-0 shadow-sm hover-lift">
+            <div class="card-body text-center py-4">
+              <mat-icon class="text-primary mb-2" style="font-size: 32px; width: 32px; height: 32px;">search</mat-icon>
+              <h6 class="mb-1">Find Properties</h6>
+              <small class="text-muted">Browse available rentals</small>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6">
+          <a routerLink="/tenant/bookings" class="card h-100 text-decoration-none border-0 shadow-sm hover-lift">
+            <div class="card-body text-center py-4">
+              <mat-icon class="text-success mb-2" style="font-size: 32px; width: 32px; height: 32px;">history</mat-icon>
+              <h6 class="mb-1">My Bookings</h6>
+              <small class="text-muted">View booking history</small>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 
     <!-- Recent Bookings -->
     @if (recentBookings.length > 0) {
-      <div class="recent-section animate-slide-up">
-        <div class="section-header">
-          <h2>Recent Bookings</h2>
-          <a routerLink="/tenant/bookings" class="view-all">
-            View All
-            <mat-icon>arrow_forward</mat-icon>
+      <div class="animate-slide-up">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Recent Bookings</h5>
+          <a routerLink="/tenant/bookings" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1">
+            View All <mat-icon style="font-size: 16px; width: 16px; height: 16px;">arrow_forward</mat-icon>
           </a>
         </div>
-        <div class="bookings-list">
-          @for (booking of recentBookings; track booking.id) {
-            <div class="booking-item">
-              <div class="booking-info">
-                <h4>{{ booking.property_title }}</h4>
-                <p>{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</p>
+        <div class="card border-0 shadow-sm">
+          <div class="list-group list-group-flush">
+            @for (booking of recentBookings; track booking.id) {
+              <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                <div>
+                  <h6 class="mb-1">{{ booking.property_title }}</h6>
+                  <small class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                </div>
+                <span class="badge rounded-pill" 
+                      [class.badge-pending]="booking.status === 'Pending'"
+                      [class.badge-approved]="booking.status === 'Approved'"
+                      [class.badge-rejected]="booking.status === 'Rejected'">
+                  {{ booking.status }}
+                </span>
               </div>
-              <span class="badge" 
-                    [class.badge-pending]="booking.status === 'Pending'"
-                    [class.badge-approved]="booking.status === 'Approved'"
-                    [class.badge-rejected]="booking.status === 'Rejected'">
-                {{ booking.status }}
-              </span>
-            </div>
-          }
+            }
+          </div>
         </div>
       </div>
     } @else if (!isLoading) {
-      <div class="empty-state animate-fade-in">
-        <mat-icon>event_note</mat-icon>
-        <h3>No Bookings Yet</h3>
-        <p>Start by browsing properties and making your first booking!</p>
+      <div class="text-center py-5 animate-fade-in">
+        <mat-icon class="text-muted mb-3" style="font-size: 64px; width: 64px; height: 64px;">event_note</mat-icon>
+        <h4>No Bookings Yet</h4>
+        <p class="text-muted">Start by browsing properties and making your first booking!</p>
         <a routerLink="/properties" class="btn btn-primary">Browse Properties</a>
       </div>
     }

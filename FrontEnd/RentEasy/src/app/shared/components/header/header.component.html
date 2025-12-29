@@ -1,58 +1,65 @@
-<header class="header">
-  <div class="header-container">
+<header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container">
     <!-- Logo -->
-    <a routerLink="/" class="logo">
-      <span class="logo-icon">🏠</span>
-      <span class="logo-text">RentEasy</span>
+    <a routerLink="/" class="navbar-brand d-flex align-items-center gap-2">
+      <span class="fs-4">🏠</span>
+      <span class="fw-bold text-primary">RentEasy</span>
     </a>
 
-    <!-- Navigation Links -->
-    <nav class="nav-links">
-      <a routerLink="/properties" routerLinkActive="active" class="nav-link">
-        Browse Properties
-      </a>
-      
-      @if (authService.isOwner()) {
-        <a routerLink="/owner/dashboard" routerLinkActive="active" class="nav-link">
-          Dashboard
-        </a>
-        <a routerLink="/owner/properties" routerLinkActive="active" class="nav-link">
-          My Properties
-        </a>
-        <a routerLink="/owner/bookings" routerLinkActive="active" class="nav-link">
-          Booking Requests
-        </a>
-      }
-      
-      @if (authService.isTenant()) {
-        <a routerLink="/tenant/dashboard" routerLinkActive="active" class="nav-link">
-          Dashboard
-        </a>
-        <a routerLink="/tenant/bookings" routerLinkActive="active" class="nav-link">
-          My Bookings
-        </a>
-      }
-    </nav>
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler border-0" type="button" [matMenuTriggerFor]="mobileMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
 
-    <!-- Auth Section -->
-    <div class="auth-section">
-      @if (authService.isAuthenticated()) {
-        @if (authService.getCurrentUser(); as user) {
-          <div class="user-menu">
-            <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
-              <div class="user-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
-              <span class="user-name">{{ user.name }}</span>
+    <!-- Desktop Navigation -->
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a routerLink="/properties" routerLinkActive="active" class="nav-link">Browse Properties</a>
+        </li>
+        @if (isOwner$ | async) {
+          <li class="nav-item">
+            <a routerLink="/owner/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/owner/properties" routerLinkActive="active" class="nav-link">My Properties</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/owner/bookings" routerLinkActive="active" class="nav-link">Booking Requests</a>
+          </li>
+        }
+        @if (isTenant$ | async) {
+          <li class="nav-item">
+            <a routerLink="/tenant/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/tenant/bookings" routerLinkActive="active" class="nav-link">My Bookings</a>
+          </li>
+        }
+      </ul>
+
+      <!-- Auth Section -->
+      <div class="d-flex align-items-center gap-2">
+        @if (isAuthenticated$ | async) {
+          @if (user$ | async; as user) {
+            <button mat-button [matMenuTriggerFor]="userMenu" class="d-flex align-items-center gap-2">
+              <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                   style="width: 36px; height: 36px;">
+                {{ user.name.charAt(0).toUpperCase() }}
+              </div>
+              <span class="d-none d-md-inline">{{ user.name }}</span>
               <mat-icon>arrow_drop_down</mat-icon>
             </button>
-            <mat-menu #userMenu="matMenu" class="user-dropdown">
-              <div class="menu-header">
-                <span class="menu-name">{{ user.name }}</span>
-                <span class="menu-role badge" [class.badge-owner]="user.role === 'Owner'" [class.badge-tenant]="user.role === 'Tenant'">
+            <mat-menu #userMenu="matMenu">
+              <div class="px-3 py-2 border-bottom">
+                <div class="fw-semibold">{{ user.name }}</div>
+                <span class="badge rounded-pill" 
+                      [class.badge-owner]="user.role === 'Owner'" 
+                      [class.badge-tenant]="user.role === 'Tenant'">
                   {{ user.role }}
                 </span>
               </div>
-              <mat-divider></mat-divider>
-              @if (authService.isOwner()) {
+              @if (isOwner$ | async) {
                 <a mat-menu-item routerLink="/owner/dashboard">
                   <mat-icon>dashboard</mat-icon>
                   <span>Dashboard</span>
@@ -62,7 +69,7 @@
                   <span>Add Property</span>
                 </a>
               }
-              @if (authService.isTenant()) {
+              @if (isTenant$ | async) {
                 <a mat-menu-item routerLink="/tenant/dashboard">
                   <mat-icon>dashboard</mat-icon>
                   <span>Dashboard</span>
@@ -78,27 +85,24 @@
                 <span>Logout</span>
               </button>
             </mat-menu>
-          </div>
+          }
+        } @else {
+          <a routerLink="/login" class="btn btn-outline-primary">Login</a>
+          <a routerLink="/register" class="btn btn-primary">Register</a>
         }
-      } @else {
-        <a routerLink="/login" class="btn btn-secondary">Login</a>
-        <a routerLink="/register" class="btn btn-primary">Register</a>
-      }
+      </div>
     </div>
 
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" mat-icon-button [matMenuTriggerFor]="mobileMenu">
-      <mat-icon>menu</mat-icon>
-    </button>
+    <!-- Mobile Menu -->
     <mat-menu #mobileMenu="matMenu">
       <a mat-menu-item routerLink="/properties">Browse Properties</a>
-      @if (authService.isAuthenticated()) {
-        @if (authService.isOwner()) {
+      @if (isAuthenticated$ | async) {
+        @if (isOwner$ | async) {
           <a mat-menu-item routerLink="/owner/dashboard">Dashboard</a>
           <a mat-menu-item routerLink="/owner/properties">My Properties</a>
           <a mat-menu-item routerLink="/owner/bookings">Booking Requests</a>
         }
-        @if (authService.isTenant()) {
+        @if (isTenant$ | async) {
           <a mat-menu-item routerLink="/tenant/dashboard">Dashboard</a>
           <a mat-menu-item routerLink="/tenant/bookings">My Bookings</a>
         }

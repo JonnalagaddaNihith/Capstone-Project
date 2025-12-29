@@ -1,110 +1,143 @@
-<div class="dashboard-page">
+<div class="py-5 bg-light min-vh-100">
   <div class="container">
     <!-- Header -->
-    <div class="dashboard-header animate-slide-up">
-      <div class="header-content">
-        <h1>Welcome back, <span class="gradient-text">{{ authService.getCurrentUser()?.name }}</span>!</h1>
-        <p>Manage your properties and bookings from your dashboard</p>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-slide-up">
+      <div>
+        <h2 class="mb-1">Welcome back, <span class="gradient-text">{{ authService.getCurrentUser()?.name }}</span>!</h2>
+        <p class="text-muted mb-0">Manage your properties and bookings from your dashboard</p>
       </div>
-      <a routerLink="/owner/properties/new" class="btn btn-primary">
+      <a routerLink="/owner/properties/new" class="btn btn-primary d-flex align-items-center gap-2">
         <mat-icon>add</mat-icon>
         Add Property
       </a>
     </div>
 
     <!-- Stats Cards -->
-    <div class="stats-grid animate-fade-in">
-      <div class="stat-card">
-        <div class="stat-icon properties">
-          <mat-icon>home_work</mat-icon>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ properties.length }}</span>
-          <span class="stat-label">Total Properties</span>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon pending">
-          <mat-icon>pending_actions</mat-icon>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ pendingBookings.length }}</span>
-          <span class="stat-label">Pending Requests</span>
+    <div class="row g-4 mb-5 animate-fade-in">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-primary bg-opacity-10 p-3">
+              <mat-icon class="text-primary">home_work</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">{{ properties.length }}</h3>
+              <small class="text-muted">Total Properties</small>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon approved">
-          <mat-icon>check_circle</mat-icon>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ approvedBookings.length }}</span>
-          <span class="stat-label">Approved Bookings</span>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+              <mat-icon class="text-warning">pending_actions</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">{{ pendingBookings.length }}</h3>
+              <small class="text-muted">Pending Requests</small>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon revenue">
-          <mat-icon>payments</mat-icon>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-success bg-opacity-10 p-3">
+              <mat-icon class="text-success">check_circle</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">{{ approvedBookings.length }}</h3>
+              <small class="text-muted">Approved Bookings</small>
+            </div>
+          </div>
         </div>
-        <div class="stat-info">
-          <span class="stat-value">₹{{ totalRevenue }}</span>
-          <span class="stat-label">Estimated Revenue</span>
+      </div>
+      
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-info bg-opacity-10 p-3">
+              <mat-icon class="text-info">payments</mat-icon>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold">₹{{ totalRevenue }}</h3>
+              <small class="text-muted">Estimated Revenue</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Quick Actions -->
-    <div class="quick-actions animate-slide-up">
-      <h2>Quick Actions</h2>
-      <div class="actions-grid">
-        <a routerLink="/owner/properties" class="action-card">
-          <mat-icon>apartment</mat-icon>
-          <span>Manage Properties</span>
-          <p>View and edit your property listings</p>
-        </a>
-        <a routerLink="/owner/bookings" class="action-card">
-          <mat-icon>calendar_today</mat-icon>
-          <span>Booking Requests</span>
-          <p>Approve or reject tenant requests</p>
-        </a>
-        <a routerLink="/owner/properties/new" class="action-card">
-          <mat-icon>add_home_work</mat-icon>
-          <span>Add New Property</span>
-          <p>List a new property for rent</p>
-        </a>
-        <a routerLink="/properties" class="action-card">
-          <mat-icon>search</mat-icon>
-          <span>Browse Market</span>
-          <p>See other properties in the market</p>
-        </a>
+    <div class="mb-5 animate-slide-up">
+      <h5 class="mb-3">Quick Actions</h5>
+      <div class="row g-3">
+        <div class="col-sm-6 col-lg-3">
+          <a routerLink="/owner/properties" class="card h-100 text-decoration-none border-0 shadow-sm hover-lift">
+            <div class="card-body text-center py-4">
+              <mat-icon class="text-primary mb-2" style="font-size: 32px; width: 32px; height: 32px;">apartment</mat-icon>
+              <h6 class="mb-1">Manage Properties</h6>
+              <small class="text-muted">View and edit your listings</small>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <a routerLink="/owner/bookings" class="card h-100 text-decoration-none border-0 shadow-sm hover-lift">
+            <div class="card-body text-center py-4">
+              <mat-icon class="text-success mb-2" style="font-size: 32px; width: 32px; height: 32px;">calendar_today</mat-icon>
+              <h6 class="mb-1">Booking Requests</h6>
+              <small class="text-muted">Approve or reject requests</small>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <a routerLink="/owner/properties/new" class="card h-100 text-decoration-none border-0 shadow-sm hover-lift">
+            <div class="card-body text-center py-4">
+              <mat-icon class="text-warning mb-2" style="font-size: 32px; width: 32px; height: 32px;">add_home_work</mat-icon>
+              <h6 class="mb-1">Add New Property</h6>
+              <small class="text-muted">List a new property</small>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <a routerLink="/properties" class="card h-100 text-decoration-none border-0 shadow-sm hover-lift">
+            <div class="card-body text-center py-4">
+              <mat-icon class="text-info mb-2" style="font-size: 32px; width: 32px; height: 32px;">search</mat-icon>
+              <h6 class="mb-1">Browse Market</h6>
+              <small class="text-muted">See other properties</small>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 
     <!-- Recent Booking Requests -->
     @if (pendingBookings.length > 0) {
-      <div class="recent-section animate-slide-up">
-        <div class="section-header">
-          <h2>Pending Requests</h2>
-          <a routerLink="/owner/bookings" class="view-all">
-            View All
-            <mat-icon>arrow_forward</mat-icon>
+      <div class="animate-slide-up">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Pending Requests</h5>
+          <a routerLink="/owner/bookings" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1">
+            View All <mat-icon style="font-size: 16px; width: 16px; height: 16px;">arrow_forward</mat-icon>
           </a>
         </div>
-        <div class="bookings-list">
-          @for (booking of pendingBookings.slice(0, 5); track booking.id) {
-            <div class="booking-item">
-              <div class="booking-info">
-                <h4>{{ booking.property_title }}</h4>
-                <p>{{ booking.tenant_name }} • {{ booking.tenant_email }}</p>
+        <div class="card border-0 shadow-sm">
+          <div class="list-group list-group-flush">
+            @for (booking of pendingBookings.slice(0, 5); track booking.id) {
+              <div class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 py-3">
+                <div>
+                  <h6 class="mb-1">{{ booking.property_title }}</h6>
+                  <small class="text-muted">{{ booking.tenant_name }} • {{ booking.tenant_email }}</small>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <small class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                  <span class="badge badge-pending rounded-pill">Pending</span>
+                </div>
               </div>
-              <div class="booking-dates">
-                <span>{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</span>
-              </div>
-              <span class="badge badge-pending">Pending</span>
-            </div>
-          }
+            }
+          </div>
         </div>
       </div>
     }

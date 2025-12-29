@@ -1,34 +1,68 @@
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-brand">
-      <span class="logo-icon">🏠</span>
-      <span class="logo-text">RentEasy</span>
-      <p class="footer-tagline">Find your perfect rental home with ease.</p>
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Brand -->
+      <div class="col-lg-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="fs-4">🏠</span>
+          <span class="fs-5 fw-bold">RentEasy</span>
+        </div>
+        <p class="text-white-50 small">
+          Your trusted partner in finding the perfect rental home. We connect property owners with quality tenants.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-6 col-lg-2">
+        <h6 class="text-uppercase mb-3">Quick Links</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a routerLink="/" class="text-white-50 text-decoration-none">Home</a></li>
+          <li class="mb-2"><a routerLink="/properties" class="text-white-50 text-decoration-none">Properties</a></li>
+          <li class="mb-2"><a routerLink="/register" class="text-white-50 text-decoration-none">Register</a></li>
+          <li class="mb-2"><a routerLink="/login" class="text-white-50 text-decoration-none">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- For Tenants -->
+      <div class="col-6 col-lg-2">
+        <h6 class="text-uppercase mb-3">For Tenants</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a routerLink="/properties" class="text-white-50 text-decoration-none">Browse Rentals</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">How It Works</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">FAQs</a></li>
+        </ul>
+      </div>
+
+      <!-- For Owners -->
+      <div class="col-6 col-lg-2">
+        <h6 class="text-uppercase mb-3">For Owners</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a routerLink="/register" class="text-white-50 text-decoration-none">List Property</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Pricing</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Resources</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-6 col-lg-2">
+        <h6 class="text-uppercase mb-3">Contact</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2 text-white-50">support&#64;renteasy.com</li>
+          <li class="mb-2 text-white-50">+1 (555) 123-4567</li>
+        </ul>
+      </div>
     </div>
-    
-    <div class="footer-links">
-      <div class="link-group">
-        <h4>Quick Links</h4>
-        <a routerLink="/properties">Browse Properties</a>
-        <a routerLink="/register">Create Account</a>
-        <a routerLink="/login">Sign In</a>
+
+    <hr class="my-4 border-secondary">
+
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center text-md-start">
+        <small class="text-white-50">© 2024 RentEasy. All rights reserved.</small>
       </div>
-      
-      <div class="link-group">
-        <h4>For Owners</h4>
-        <a routerLink="/register">List Your Property</a>
-        <a routerLink="/owner/dashboard">Owner Dashboard</a>
-      </div>
-      
-      <div class="link-group">
-        <h4>For Tenants</h4>
-        <a routerLink="/properties">Search Rentals</a>
-        <a routerLink="/tenant/dashboard">Tenant Dashboard</a>
+      <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+        <a href="#" class="text-white-50 text-decoration-none me-3 small">Privacy Policy</a>
+        <a href="#" class="text-white-50 text-decoration-none small">Terms of Service</a>
       </div>
     </div>
-  </div>
-  
-  <div class="footer-bottom">
-    <p>&copy; {{ currentYear }} RentEasy. All rights reserved.</p>
   </div>
 </footer>

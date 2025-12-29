@@ -24,8 +24,7 @@ import { Property } from '../../../shared/models/property.model';
     MatIconModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './property-form.component.html',
-  styleUrl: './property-form.component.css'
+  templateUrl: './property-form.component.html'
 })
 export class PropertyFormComponent implements OnInit {
   propertyForm: FormGroup;
@@ -91,8 +90,7 @@ export class PropertyFormComponent implements OnInit {
       const file = input.files[0];
       const reader = new FileReader();
       reader.onload = () => {
-        const base64 = (reader.result as string).split(',')[1];
-        this.photos[index] = base64;
+        this.photos[index] = reader.result as string;
       };
       reader.readAsDataURL(file);
     }

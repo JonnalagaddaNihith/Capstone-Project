@@ -1,77 +1,92 @@
-<div class="booking-requests-page">
+<div class="py-5 bg-light min-vh-100">
   <div class="container">
-    <div class="page-header animate-slide-up">
-      <h1>Booking <span class="gradient-text">Requests</span></h1>
-      <p>Manage booking requests for your properties</p>
+    <div class="text-center mb-5 animate-slide-up">
+      <h2>Booking <span class="gradient-text">Requests</span></h2>
+      <p class="text-muted">Manage booking requests for your properties</p>
     </div>
 
     @if (isLoading) {
-      <div class="loading-state">
-        <mat-spinner diameter="48"></mat-spinner>
-        <p>Loading bookings...</p>
+      <div class="text-center py-5">
+        <mat-spinner diameter="48" class="mx-auto mb-3"></mat-spinner>
+        <p class="text-muted">Loading bookings...</p>
       </div>
     } @else {
       <mat-tab-group animationDuration="200ms" class="animate-fade-in">
         <!-- Pending Tab -->
         <mat-tab>
           <ng-template mat-tab-label>
-            <span class="tab-label">
+            <span class="d-flex align-items-center gap-2">
               Pending
               @if (pendingBookings.length > 0) {
-                <span class="tab-badge pending">{{ pendingBookings.length }}</span>
+                <span class="badge bg-warning text-dark rounded-pill">{{ pendingBookings.length }}</span>
               }
             </span>
           </ng-template>
           
           @if (pendingBookings.length === 0) {
-            <div class="empty-tab">
-              <mat-icon>inbox</mat-icon>
-              <p>No pending requests</p>
+            <div class="text-center py-5">
+              <mat-icon class="text-muted mb-2" style="font-size: 48px; width: 48px; height: 48px;">inbox</mat-icon>
+              <p class="text-muted">No pending requests</p>
             </div>
           } @else {
-            <div class="bookings-list">
+            <div class="py-4">
               @for (booking of pendingBookings; track booking.id) {
-                <div class="booking-card">
-                  <div class="booking-main">
-                    <div class="booking-property">
-                      <h3>{{ booking.property_title }}</h3>
-                      <p class="location">{{ booking.property_location }}</p>
-                    </div>
-                    <div class="booking-tenant">
-                      <div class="tenant-avatar">{{ booking.tenant_name?.charAt(0) || 'T' }}</div>
-                      <div class="tenant-info">
-                        <span class="tenant-name">{{ booking.tenant_name }}</span>
-                        <span class="tenant-email">{{ booking.tenant_email }}</span>
+                <div class="card mb-3 border-0 shadow-sm">
+                  <div class="card-body">
+                    <div class="row align-items-center g-3">
+                      <!-- Property Info -->
+                      <div class="col-md-3">
+                        <h6 class="mb-1">{{ booking.property_title }}</h6>
+                        <small class="text-muted">{{ booking.property_location }}</small>
+                      </div>
+                      <!-- Tenant Info -->
+                      <div class="col-md-3">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center" 
+                               style="width: 40px; height: 40px; font-weight: 600;">
+                            {{ booking.tenant_name?.charAt(0) || 'T' }}
+                          </div>
+                          <div>
+                            <div class="fw-medium small">{{ booking.tenant_name }}</div>
+                            <small class="text-muted">{{ booking.tenant_email }}</small>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Dates -->
+                      <div class="col-md-4">
+                        <div class="row text-center">
+                          <div class="col-4">
+                            <small class="text-muted d-block">Check-in</small>
+                            <small class="fw-medium">{{ booking.check_in | date:'MMM d, yyyy' }}</small>
+                          </div>
+                          <div class="col-4">
+                            <small class="text-muted d-block">Check-out</small>
+                            <small class="fw-medium">{{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                          </div>
+                          <div class="col-4">
+                            <small class="text-muted d-block">Duration</small>
+                            <small class="fw-medium">{{ getDaysCount(booking) }} days</small>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Actions -->
+                      <div class="col-md-2 text-end">
+                        <div class="d-flex gap-2 justify-content-end">
+                          <button class="btn btn-success btn-sm d-flex align-items-center gap-1" 
+                                  (click)="approveBooking(booking)" [disabled]="processingId === booking.id">
+                            @if (processingId === booking.id) {
+                              <mat-spinner diameter="16"></mat-spinner>
+                            } @else {
+                              <mat-icon style="font-size: 16px; width: 16px; height: 16px;">check</mat-icon>
+                            }
+                          </button>
+                          <button class="btn btn-danger btn-sm d-flex align-items-center gap-1" 
+                                  (click)="rejectBooking(booking)" [disabled]="processingId === booking.id">
+                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <div class="booking-dates">
-                      <div class="date-item">
-                        <span class="date-label">Check-in</span>
-                        <span class="date-value">{{ booking.check_in | date:'MMM d, yyyy' }}</span>
-                      </div>
-                      <div class="date-item">
-                        <span class="date-label">Check-out</span>
-                        <span class="date-value">{{ booking.check_out | date:'MMM d, yyyy' }}</span>
-                      </div>
-                      <div class="date-item">
-                        <span class="date-label">Duration</span>
-                        <span class="date-value">{{ getDaysCount(booking) }} days</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="booking-actions">
-                    <button class="btn btn-success" (click)="approveBooking(booking)" [disabled]="processingId === booking.id">
-                      @if (processingId === booking.id) {
-                        <mat-spinner diameter="18"></mat-spinner>
-                      } @else {
-                        <mat-icon>check</mat-icon>
-                        Approve
-                      }
-                    </button>
-                    <button class="btn btn-danger" (click)="rejectBooking(booking)" [disabled]="processingId === booking.id">
-                      <mat-icon>close</mat-icon>
-                      Reject
-                    </button>
                   </div>
                 </div>
               }
@@ -82,47 +97,49 @@
         <!-- Approved Tab -->
         <mat-tab>
           <ng-template mat-tab-label>
-            <span class="tab-label">
+            <span class="d-flex align-items-center gap-2">
               Approved
               @if (approvedBookings.length > 0) {
-                <span class="tab-badge approved">{{ approvedBookings.length }}</span>
+                <span class="badge bg-success rounded-pill">{{ approvedBookings.length }}</span>
               }
             </span>
           </ng-template>
           
           @if (approvedBookings.length === 0) {
-            <div class="empty-tab">
-              <mat-icon>event_available</mat-icon>
-              <p>No approved bookings</p>
+            <div class="text-center py-5">
+              <mat-icon class="text-muted mb-2" style="font-size: 48px; width: 48px; height: 48px;">event_available</mat-icon>
+              <p class="text-muted">No approved bookings</p>
             </div>
           } @else {
-            <div class="bookings-list">
+            <div class="py-4">
               @for (booking of approvedBookings; track booking.id) {
-                <div class="booking-card">
-                  <div class="booking-main">
-                    <div class="booking-property">
-                      <h3>{{ booking.property_title }}</h3>
-                      <p class="location">{{ booking.property_location }}</p>
-                    </div>
-                    <div class="booking-tenant">
-                      <div class="tenant-avatar success">{{ booking.tenant_name?.charAt(0) || 'T' }}</div>
-                      <div class="tenant-info">
-                        <span class="tenant-name">{{ booking.tenant_name }}</span>
-                        <span class="tenant-email">{{ booking.tenant_email }}</span>
+                <div class="card mb-3 border-0 shadow-sm border-start border-success border-3">
+                  <div class="card-body">
+                    <div class="row align-items-center g-3">
+                      <div class="col-md-3">
+                        <h6 class="mb-1">{{ booking.property_title }}</h6>
+                        <small class="text-muted">{{ booking.property_location }}</small>
                       </div>
-                    </div>
-                    <div class="booking-dates">
-                      <div class="date-item">
-                        <span class="date-label">Check-in</span>
-                        <span class="date-value">{{ booking.check_in | date:'MMM d, yyyy' }}</span>
+                      <div class="col-md-3">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" 
+                               style="width: 40px; height: 40px; font-weight: 600;">
+                            {{ booking.tenant_name?.charAt(0) || 'T' }}
+                          </div>
+                          <div>
+                            <div class="fw-medium small">{{ booking.tenant_name }}</div>
+                            <small class="text-muted">{{ booking.tenant_email }}</small>
+                          </div>
+                        </div>
                       </div>
-                      <div class="date-item">
-                        <span class="date-label">Check-out</span>
-                        <span class="date-value">{{ booking.check_out | date:'MMM d, yyyy' }}</span>
+                      <div class="col-md-4">
+                        <small class="text-muted">{{ booking.check_in | date:'MMM d, yyyy' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                      </div>
+                      <div class="col-md-2 text-end">
+                        <span class="badge badge-approved rounded-pill">Approved</span>
                       </div>
                     </div>
                   </div>
-                  <span class="badge badge-approved">Approved</span>
                 </div>
               }
             </div>
@@ -132,35 +149,44 @@
         <!-- Rejected Tab -->
         <mat-tab>
           <ng-template mat-tab-label>
-            <span class="tab-label">Rejected</span>
+            <span>Rejected</span>
           </ng-template>
           
           @if (rejectedBookings.length === 0) {
-            <div class="empty-tab">
-              <mat-icon>event_busy</mat-icon>
-              <p>No rejected bookings</p>
+            <div class="text-center py-5">
+              <mat-icon class="text-muted mb-2" style="font-size: 48px; width: 48px; height: 48px;">event_busy</mat-icon>
+              <p class="text-muted">No rejected bookings</p>
             </div>
           } @else {
-            <div class="bookings-list">
+            <div class="py-4">
               @for (booking of rejectedBookings; track booking.id) {
-                <div class="booking-card">
-                  <div class="booking-main">
-                    <div class="booking-property">
-                      <h3>{{ booking.property_title }}</h3>
-                      <p class="location">{{ booking.property_location }}</p>
-                    </div>
-                    <div class="booking-tenant">
-                      <div class="tenant-avatar danger">{{ booking.tenant_name?.charAt(0) || 'T' }}</div>
-                      <div class="tenant-info">
-                        <span class="tenant-name">{{ booking.tenant_name }}</span>
-                        <span class="tenant-email">{{ booking.tenant_email }}</span>
+                <div class="card mb-3 border-0 shadow-sm opacity-75">
+                  <div class="card-body">
+                    <div class="row align-items-center g-3">
+                      <div class="col-md-3">
+                        <h6 class="mb-1">{{ booking.property_title }}</h6>
+                        <small class="text-muted">{{ booking.property_location }}</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center" 
+                               style="width: 40px; height: 40px; font-weight: 600;">
+                            {{ booking.tenant_name?.charAt(0) || 'T' }}
+                          </div>
+                          <div>
+                            <div class="fw-medium small">{{ booking.tenant_name }}</div>
+                            <small class="text-muted">{{ booking.tenant_email }}</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <small class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                      </div>
+                      <div class="col-md-2 text-end">
+                        <span class="badge badge-rejected rounded-pill">Rejected</span>
                       </div>
                     </div>
-                    <div class="booking-dates">
-                      <span>{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</span>
-                    </div>
                   </div>
-                  <span class="badge badge-rejected">Rejected</span>
                 </div>
               }
             </div>

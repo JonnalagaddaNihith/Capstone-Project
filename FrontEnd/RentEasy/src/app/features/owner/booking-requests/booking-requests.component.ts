@@ -18,8 +18,7 @@ import { Booking } from '../../../shared/models/booking.model';
     MatProgressSpinnerModule,
     MatTabsModule
   ],
-  templateUrl: './booking-requests.component.html',
-  styleUrl: './booking-requests.component.css'
+  templateUrl: './booking-requests.component.html'
 })
 export class BookingRequestsComponent implements OnInit {
   bookings: Booking[] = [];

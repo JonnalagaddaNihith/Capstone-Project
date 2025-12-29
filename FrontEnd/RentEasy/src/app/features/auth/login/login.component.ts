@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AuthService } from '../../../core/services/auth.service';
-import { NotificationService } from '../../../core/services/notification.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { AppState, AuthActions, selectIsLoading, selectAuthError } from '../../../store';
 
 @Component({
   selector: 'app-login',
@@ -24,27 +26,28 @@ import { NotificationService } from '../../../core/services/notification.service
     MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  loginForm: FormGroup;
-  isLoading = false;
-  hidePassword = true;
-  returnUrl: string = '/';
+export class LoginComponent implements OnInit {
+  private store = inject(Store<AppState>);
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private notificationService: NotificationService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  loginForm: FormGroup;
+  hidePassword = true;
+  
+  isLoading$: Observable<boolean> = this.store.select(selectIsLoading);
+  error$: Observable<string | null> = this.store.select(selectAuthError);
+
+  constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  ngOnInit(): void {
+    // Clear any previous auth errors
+    this.store.dispatch(AuthActions.clearAuthError());
   }
 
   onSubmit(): void {
@@ -53,30 +56,7 @@ export class LoginComponent {
       return;
     }
 
-    this.isLoading = true;
     const { email, password } = this.loginForm.value;
-
-    this.authService.login({ email, password }).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        if (response.success) {
-          this.notificationService.success('Welcome back! Login successful.');
-          const user = this.authService.getCurrentUser();
-          if (user?.role === 'Owner') {
-            this.router.navigate(['/owner/dashboard']);
-          } else if (user?.role === 'Tenant') {
-            this.router.navigate(['/tenant/dashboard']);
-          } else {
-            this.router.navigate([this.returnUrl]);
-          }
-        } else {
-          this.notificationService.error(response.message || 'Login failed');
-        }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.notificationService.error(error.error?.message || 'Login failed. Please try again.');
-      }
-    });
+    this.store.dispatch(AuthActions.login({ credentials: { email, password } }));
   }
 }

@@ -20,8 +20,7 @@ import { Booking } from '../../../shared/models/booking.model';
     MatIconModule,
     MatCardModule
   ],
-  templateUrl: './owner-dashboard.component.html',
-  styleUrl: './owner-dashboard.component.css'
+  templateUrl: './owner-dashboard.component.html'
 })
 export class OwnerDashboardComponent implements OnInit {
   properties: Property[] = [];

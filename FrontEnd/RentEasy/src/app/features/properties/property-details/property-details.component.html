@@ -1,149 +1,165 @@
-<div class="property-details-page">
+<div class="py-5 bg-light min-vh-100">
   @if (isLoading) {
-    <div class="loading-state">
-      <mat-spinner diameter="48"></mat-spinner>
-      <p>Loading property details...</p>
+    <div class="container text-center py-5">
+      <mat-spinner diameter="48" class="mx-auto mb-3"></mat-spinner>
+      <p class="text-muted">Loading property details...</p>
     </div>
   } @else if (!property) {
-    <div class="error-state container">
-      <mat-icon>error_outline</mat-icon>
-      <h2>Property Not Found</h2>
-      <p>The property you're looking for doesn't exist or has been removed.</p>
+    <div class="container text-center py-5">
+      <mat-icon class="text-danger mb-3" style="font-size: 64px; width: 64px; height: 64px;">error_outline</mat-icon>
+      <h3>Property Not Found</h3>
+      <p class="text-muted">The property you're looking for doesn't exist or has been removed.</p>
       <a routerLink="/properties" class="btn btn-primary">Browse Properties</a>
     </div>
   } @else {
     <div class="container">
       <!-- Breadcrumb -->
-      <nav class="breadcrumb animate-fade-in">
-        <a routerLink="/">Home</a>
-        <mat-icon>chevron_right</mat-icon>
-        <a routerLink="/properties">Properties</a>
-        <mat-icon>chevron_right</mat-icon>
-        <span>{{ property.title }}</span>
+      <nav aria-label="breadcrumb" class="mb-4 animate-fade-in">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+          <li class="breadcrumb-item"><a routerLink="/properties">Properties</a></li>
+          <li class="breadcrumb-item active">{{ property.title }}</li>
+        </ol>
       </nav>
 
-      <div class="details-layout">
+      <div class="row g-4">
         <!-- Left Column - Images & Details -->
-        <div class="details-main animate-slide-up">
+        <div class="col-lg-8 animate-slide-up">
           <!-- Image Gallery -->
-          <div class="image-gallery">
-            <div class="main-image">
+          <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+            <div class="position-relative" style="height: 400px;">
               @if (photos.length > 0) {
-                <img [src]="'data:image/jpeg;base64,' + photos[currentImageIndex]" [alt]="property.title">
+                <img [src]="photos[currentImageIndex]" [alt]="property.title" 
+                     class="w-100 h-100 object-fit-cover">
                 @if (photos.length > 1) {
-                  <button class="nav-btn prev" (click)="prevImage()">
+                  <button class="btn btn-light btn-sm position-absolute start-0 top-50 translate-middle-y ms-3 rounded-circle shadow" 
+                          (click)="prevImage()">
                     <mat-icon>chevron_left</mat-icon>
                   </button>
-                  <button class="nav-btn next" (click)="nextImage()">
+                  <button class="btn btn-light btn-sm position-absolute end-0 top-50 translate-middle-y me-3 rounded-circle shadow" 
+                          (click)="nextImage()">
                     <mat-icon>chevron_right</mat-icon>
                   </button>
                 }
               } @else {
-                <div class="no-image">
-                  <mat-icon>home</mat-icon>
-                  <span>No Images Available</span>
+                <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex flex-column align-items-center justify-content-center">
+                  <mat-icon class="text-muted mb-2" style="font-size: 64px; width: 64px; height: 64px;">home</mat-icon>
+                  <span class="text-muted">No Images Available</span>
                 </div>
               }
             </div>
             @if (photos.length > 1) {
-              <div class="thumbnails">
-                @for (photo of photos; track $index) {
-                  <button class="thumbnail" 
-                          [class.active]="$index === currentImageIndex" 
-                          (click)="selectImage($index)">
-                    <img [src]="'data:image/jpeg;base64,' + photo" alt="Thumbnail">
-                  </button>
-                }
-              </div>
-            }
-          </div>
-
-          <!-- Property Info -->
-          <div class="property-info">
-            <h1>{{ property.title }}</h1>
-            
-            <div class="location">
-              <mat-icon>location_on</mat-icon>
-              <span>{{ property.location }}</span>
-            </div>
-
-            <div class="price-badge">
-              <span class="price">₹{{ property.rent_per_day }}</span>
-              <span class="period">per day</span>
-            </div>
-
-            <div class="section">
-              <h3>Description</h3>
-              <p>{{ property.property_description }}</p>
-            </div>
-
-            @if (amenitiesList.length > 0) {
-              <div class="section">
-                <h3>Amenities</h3>
-                <div class="amenities-grid">
-                  @for (amenity of amenitiesList; track amenity) {
-                    <div class="amenity-item">
-                      <mat-icon>check_circle</mat-icon>
-                      <span>{{ amenity }}</span>
-                    </div>
+              <div class="card-footer bg-white border-0 py-3">
+                <div class="d-flex gap-2 overflow-auto">
+                  @for (photo of photos; track $index) {
+                    <button class="btn p-0 border rounded overflow-hidden" 
+                            [class.border-primary]="$index === currentImageIndex"
+                            [class.border-2]="$index === currentImageIndex"
+                            (click)="selectImage($index)"
+                            style="width: 80px; height: 60px; flex-shrink: 0;">
+                      <img [src]="photo" alt="Thumbnail" class="w-100 h-100 object-fit-cover">
+                    </button>
                   }
                 </div>
               </div>
             }
           </div>
+
+          <!-- Property Info -->
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="mb-3">{{ property.title }}</h2>
+              
+              <div class="d-flex align-items-center text-muted mb-3">
+                <mat-icon class="me-1">location_on</mat-icon>
+                <span>{{ property.location }}</span>
+              </div>
+
+              <div class="d-inline-block bg-primary bg-opacity-10 rounded-3 px-3 py-2 mb-4">
+                <span class="h4 text-primary fw-bold mb-0">₹{{ property.rent_per_day }}</span>
+                <span class="text-muted ms-1">per day</span>
+              </div>
+
+              <div class="mb-4">
+                <h5 class="mb-3">Description</h5>
+                <p class="text-muted">{{ property.property_description }}</p>
+              </div>
+
+              @if (amenitiesList.length > 0) {
+                <div>
+                  <h5 class="mb-3">Amenities</h5>
+                  <div class="row g-2">
+                    @for (amenity of amenitiesList; track amenity) {
+                      <div class="col-6 col-md-4">
+                        <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                          <mat-icon class="text-success" style="font-size: 18px; width: 18px; height: 18px;">check_circle</mat-icon>
+                          <span class="small">{{ amenity }}</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
         </div>
 
         <!-- Right Column - Booking Card -->
-        <div class="booking-sidebar animate-slide-in">
-          <div class="booking-card">
-            <div class="booking-header">
-              <span class="price">₹{{ property.rent_per_day }}</span>
-              <span class="period">/ day</span>
-            </div>
+        <div class="col-lg-4 animate-slide-in">
+          <div class="card border-0 shadow-sm sticky-top" style="top: 100px;">
+            <div class="card-body p-4">
+              <div class="text-center mb-4 pb-3 border-bottom">
+                <span class="h3 fw-bold text-primary">₹{{ property.rent_per_day }}</span>
+                <span class="text-muted">/ day</span>
+              </div>
 
-            @if (authService.isTenant() || !authService.isAuthenticated()) {
-              <div class="booking-form">
-                <mat-form-field appearance="outline">
-                  <mat-label>Check-in</mat-label>
-                  <input matInput [matDatepicker]="checkInPicker" [(ngModel)]="checkIn" [min]="minDate">
-                  <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #checkInPicker></mat-datepicker>
-                </mat-form-field>
+              @if (authService.isTenant() || !authService.isAuthenticated()) {
+                <div class="mb-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Check-in</mat-label>
+                    <input matInput [matDatepicker]="checkInPicker" [(ngModel)]="checkIn" [min]="minDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #checkInPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
 
-                <mat-form-field appearance="outline">
-                  <mat-label>Check-out</mat-label>
-                  <input matInput [matDatepicker]="checkOutPicker" [(ngModel)]="checkOut" [min]="checkIn || minDate">
-                  <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #checkOutPicker></mat-datepicker>
-                </mat-form-field>
+                <div class="mb-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Check-out</mat-label>
+                    <input matInput [matDatepicker]="checkOutPicker" [(ngModel)]="checkOut" [min]="checkIn || minDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #checkOutPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
 
                 @if (totalDays > 0) {
-                  <div class="price-breakdown">
-                    <div class="breakdown-row">
-                      <span>₹{{ property.rent_per_day }} × {{ totalDays }} days</span>
+                  <div class="bg-light rounded p-3 mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                      <span class="text-muted">₹{{ property.rent_per_day }} × {{ totalDays }} days</span>
                       <span>₹{{ totalPrice }}</span>
                     </div>
-                    <div class="breakdown-total">
+                    <hr class="my-2">
+                    <div class="d-flex justify-content-between fw-bold">
                       <span>Total</span>
-                      <span>₹{{ totalPrice }}</span>
+                      <span class="text-primary">₹{{ totalPrice }}</span>
                     </div>
                   </div>
                 }
 
-                <button class="btn btn-primary book-btn" (click)="bookProperty()" [disabled]="isBooking">
+                <button class="btn btn-primary w-100 py-2" (click)="bookProperty()" [disabled]="isBooking">
                   @if (isBooking) {
                     <ng-container><mat-spinner diameter="20"></mat-spinner> Booking...</ng-container>
                   } @else {
                     Request Booking
                   }
                 </button>
-              </div>
-            } @else {
-              <div class="owner-notice">
-                <mat-icon>info</mat-icon>
-                <p>As a property owner, you cannot book properties. Switch to a tenant account to make bookings.</p>
-              </div>
-            }
+              } @else {
+                <div class="alert alert-info d-flex align-items-start gap-2 mb-0">
+                  <mat-icon>info</mat-icon>
+                  <small>As a property owner, you cannot book properties. Switch to a tenant account to make bookings.</small>
+                </div>
+              }
+            </div>
           </div>
         </div>
       </div>

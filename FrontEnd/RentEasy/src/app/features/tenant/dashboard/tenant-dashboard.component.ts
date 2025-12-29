@@ -12,7 +12,6 @@ import { Booking } from '../../../shared/models/booking.model';
   standalone: true,
   imports: [CommonModule, RouterModule, MatButtonModule, MatIconModule],
   templateUrl: './tenant-dashboard.component.html',
-  styleUrl: './tenant-dashboard.component.css'
 })
 export class TenantDashboardComponent implements OnInit {
   bookings: Booking[] = [];
