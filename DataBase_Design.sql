@@ -11,8 +11,8 @@ CREATE TABLE Users (
     role ENUM('Owner', 'Tenant', 'Admin') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 SELECT * FROM Users;
+DROP TABLE Users;
 -- 2. Properties Table
 CREATE TABLE Properties (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,8 +30,8 @@ CREATE TABLE Properties (
     FOREIGN KEY (owner_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 SELECT * FROM Properties;
-delete from Properties where id = 2;
-
+DROP TABLE Properties;
+SHOW VARIABLES LIKE 'secure_file_priv';
 -- 3. Bookings Table
 CREATE TABLE Bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,3 +45,4 @@ CREATE TABLE Bookings (
     FOREIGN KEY (tenant_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 SELECT * FROM Bookings;
+DROP TABLE Bookings;
