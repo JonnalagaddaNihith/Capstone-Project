@@ -44,11 +44,15 @@
               </mat-form-field>
 
               <button mat-raised-button color="primary" type="submit" class="w-100 py-2" [disabled]="isLoading$ | async">
-                @if (isLoading$ | async) {
-                  <ng-container><mat-spinner diameter="20"></mat-spinner> Signing in...</ng-container>
-                } @else {
-                  <ng-container>Sign In <mat-icon>arrow_forward</mat-icon></ng-container>
-                }
+                <span class="d-flex align-items-center justify-content-center">
+                  @if (isLoading$ | async) {
+                    <mat-spinner diameter="20" class="me-2"></mat-spinner>
+                    <span>Signing in...</span>
+                  } @else {
+                    <span>Sign In</span>
+                    <mat-icon class="ms-2">arrow_forward</mat-icon>
+                  }
+                </span>
               </button>
             </form>
 

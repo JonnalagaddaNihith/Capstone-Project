@@ -1,0 +1,57 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center py-5 admin-bg">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0 admin-card">
+          <div class="card-body p-5">
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <div class="admin-icon-wrapper mb-3">
+                <mat-icon class="admin-icon">admin_panel_settings</mat-icon>
+              </div>
+              <h4 class="fw-bold text-white">Admin Portal</h4>
+              <p class="text-white-50">Sign in to access admin dashboard</p>
+            </div>
+
+            <!-- Form -->
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <mat-form-field appearance="outline" class="w-100 mb-3 admin-field">
+                <mat-label>Email Address</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="admin@example.com">
+                <mat-icon matPrefix>email</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-100 mb-4 admin-field">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+                <mat-icon matPrefix>lock</mat-icon>
+                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <button mat-raised-button type="submit" class="w-100 py-2 admin-btn" [disabled]="isLoading">
+                <span class="d-flex align-items-center justify-content-center">
+                  @if (isLoading) {
+                    <mat-spinner diameter="20" class="me-2"></mat-spinner>
+                    <span>Signing in...</span>
+                  } @else {
+                    <mat-icon class="me-2">login</mat-icon>
+                    <span>Access Dashboard</span>
+                  }
+                </span>
+              </button>
+            </form>
+
+            <div class="text-center mt-4">
+              <a routerLink="/" class="text-white-50 small text-decoration-none">
+                <mat-icon class="align-middle" style="font-size: 14px; width: 14px; height: 14px;">arrow_back</mat-icon>
+                Back to Main Site
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

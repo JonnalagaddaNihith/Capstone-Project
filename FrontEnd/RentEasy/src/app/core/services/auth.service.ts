@@ -96,6 +96,10 @@ export class AuthService {
     return this.hasRole('Tenant');
   }
 
+  isAdmin(): boolean {
+    return this.hasRole('Admin');
+  }
+
   getProfile(): Observable<ApiResponse<User>> {
     return this.http.get<ApiResponse<User>>(`${this.API_URL}/users/profile`);
   }

@@ -1,0 +1,48 @@
+.admin-bg {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.admin-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+
+.admin-btn {
+  background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%) !important;
+  color: white !important;
+}
+
+:host ::ng-deep .admin-field .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+:host ::ng-deep .admin-field .mat-mdc-form-field-label,
+:host ::ng-deep .admin-field input,
+:host ::ng-deep .admin-field .mat-icon {
+  color: white !important;
+}
+
+:host ::ng-deep .admin-field .mdc-text-field--outlined .mdc-notched-outline__leading,
+:host ::ng-deep .admin-field .mdc-text-field--outlined .mdc-notched-outline__notch,
+:host ::ng-deep .admin-field .mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
