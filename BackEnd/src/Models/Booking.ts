@@ -28,6 +28,9 @@ export interface BookingResponseDTO {
   status: 'Pending' | 'Approved' | 'Rejected';
   request_time: Date;
   property_title?: string;
+  property_location?: string;
+  property_rent_per_day?: number;
   tenant_name?: string;
+  tenant_email?: string;
   owner_id?: number;
 }

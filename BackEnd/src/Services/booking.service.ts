@@ -86,8 +86,11 @@ export class BookingService {
         `SELECT 
            b.*,
            p.title as property_title,
+           p.location as property_location,
+           p.rent_per_day as property_rent_per_day,
            p.owner_id,
-           u.name as tenant_name
+           u.name as tenant_name,
+           u.email as tenant_email
          FROM Bookings b
          JOIN Properties p ON b.property_id = p.id
          JOIN Users u ON b.tenant_id = u.id
@@ -108,7 +111,10 @@ export class BookingService {
         status: booking.status,
         request_time: booking.request_time,
         property_title: booking.property_title,
+        property_location: booking.property_location,
+        property_rent_per_day: booking.property_rent_per_day,
         tenant_name: booking.tenant_name,
+        tenant_email: booking.tenant_email,
         owner_id: booking.owner_id,
       };
     } catch (error: any) {
@@ -123,8 +129,11 @@ export class BookingService {
         `SELECT 
            b.*,
            p.title as property_title,
+           p.location as property_location,
+           p.rent_per_day as property_rent_per_day,
            p.owner_id,
-           u.name as tenant_name
+           u.name as tenant_name,
+           u.email as tenant_email
          FROM Bookings b
          JOIN Properties p ON b.property_id = p.id
          JOIN Users u ON b.tenant_id = u.id
@@ -142,7 +151,10 @@ export class BookingService {
         status: booking.status,
         request_time: booking.request_time,
         property_title: booking.property_title,
+        property_location: booking.property_location,
+        property_rent_per_day: booking.property_rent_per_day,
         tenant_name: booking.tenant_name,
+        tenant_email: booking.tenant_email,
         owner_id: booking.owner_id,
       }));
     } catch (error: any) {
@@ -157,8 +169,11 @@ export class BookingService {
         `SELECT 
            b.*,
            p.title as property_title,
+           p.location as property_location,
+           p.rent_per_day as property_rent_per_day,
            p.owner_id,
-           u.name as tenant_name
+           u.name as tenant_name,
+           u.email as tenant_email
          FROM Bookings b
          JOIN Properties p ON b.property_id = p.id
          JOIN Users u ON b.tenant_id = u.id
@@ -176,7 +191,10 @@ export class BookingService {
         status: booking.status,
         request_time: booking.request_time,
         property_title: booking.property_title,
+        property_location: booking.property_location,
+        property_rent_per_day: booking.property_rent_per_day,
         tenant_name: booking.tenant_name,
+        tenant_email: booking.tenant_email,
         owner_id: booking.owner_id,
       }));
     } catch (error: any) {
@@ -192,8 +210,11 @@ export class BookingService {
         `SELECT 
            b.*,
            p.title as property_title,
+           p.location as property_location,
+           p.rent_per_day as property_rent_per_day,
            p.owner_id,
-           u.name as tenant_name
+           u.name as tenant_name,
+           u.email as tenant_email
          FROM Bookings b
          JOIN Properties p ON b.property_id = p.id
          JOIN Users u ON b.tenant_id = u.id
@@ -209,7 +230,10 @@ export class BookingService {
         status: booking.status,
         request_time: booking.request_time,
         property_title: booking.property_title,
+        property_location: booking.property_location,
+        property_rent_per_day: booking.property_rent_per_day,
         tenant_name: booking.tenant_name,
+        tenant_email: booking.tenant_email,
         owner_id: booking.owner_id,
       }));
     } catch (error: any) {
