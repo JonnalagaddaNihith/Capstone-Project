@@ -67,12 +67,70 @@ export class OwnerDashboardComponent implements OnInit {
     return this.bookings.filter(b => b.status === 'Approved');
   }
 
-  get totalRevenue(): number {
-    return this.approvedBookings.reduce((sum, b) => {
-      const checkIn = new Date(b.check_in);
+  /**
+   * Get only upcoming or current approved bookings (check_out >= today)
+   */
+  get upcomingApprovedBookings(): Booking[] {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return this.approvedBookings.filter(b => {
       const checkOut = new Date(b.check_out);
-      const days = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
-      return sum + (b.property_rent_per_day || 0) * days;
+      return checkOut >= today;
+    });
+  }
+
+  /**
+   * Calculate revenue for a single booking
+   */
+  private calculateBookingRevenue(booking: Booking): number {
+    const checkIn = new Date(booking.check_in);
+    const checkOut = new Date(booking.check_out);
+    const diffMs = checkOut.getTime() - checkIn.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
+    const days = Math.ceil(diffHours / 24);
+    return (booking.property_rent_per_day || 0) * days;
+  }
+
+  /**
+   * Total estimated revenue from upcoming/current approved bookings
+   */
+  get totalRevenue(): number {
+    return this.upcomingApprovedBookings.reduce((sum, b) => {
+      return sum + this.calculateBookingRevenue(b);
     }, 0);
+  }
+
+  /**
+   * Revenue breakdown by property for upcoming/current approved bookings
+   */
+  get revenueByProperty(): { propertyTitle: string; propertyId: number; revenue: number; bookingCount: number }[] {
+    const revenueMap = new Map<number, { propertyTitle: string; revenue: number; bookingCount: number }>();
+    
+    for (const booking of this.upcomingApprovedBookings) {
+      const propertyId = booking.property_id;
+      const revenue = this.calculateBookingRevenue(booking);
+      
+      if (revenueMap.has(propertyId)) {
+        const existing = revenueMap.get(propertyId)!;
+        existing.revenue += revenue;
+        existing.bookingCount += 1;
+      } else {
+        revenueMap.set(propertyId, {
+          propertyTitle: booking.property_title || 'Unknown Property',
+          revenue: revenue,
+          bookingCount: 1
+        });
+      }
+    }
+    
+    // Convert to array and sort by revenue descending
+    return Array.from(revenueMap.entries())
+      .map(([propertyId, data]) => ({
+        propertyId,
+        propertyTitle: data.propertyTitle,
+        revenue: data.revenue,
+        bookingCount: data.bookingCount
+      }))
+      .sort((a, b) => b.revenue - a.revenue);
   }
 }

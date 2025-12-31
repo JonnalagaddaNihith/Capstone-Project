@@ -58,10 +58,12 @@
                           <div class="col-4">
                             <small class="text-muted d-block">Check-in</small>
                             <small class="fw-medium">{{ booking.check_in | date:'MMM d, yyyy' }}</small>
+                            <small class="d-block text-primary" style="font-size: 10px;">{{ booking.check_in | date:'h:mm a' }}</small>
                           </div>
                           <div class="col-4">
                             <small class="text-muted d-block">Check-out</small>
                             <small class="fw-medium">{{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                            <small class="d-block text-primary" style="font-size: 10px;">{{ booking.check_out | date:'h:mm a' }}</small>
                           </div>
                           <div class="col-4">
                             <small class="text-muted d-block">Duration</small>
@@ -133,7 +135,10 @@
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <small class="text-muted">{{ booking.check_in | date:'MMM d, yyyy' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                        <div class="d-flex flex-column">
+                          <small class="text-muted">{{ booking.check_in | date:'MMM d, yyyy' }} ({{ booking.check_in | date:'h:mm a' }})</small>
+                          <small class="text-muted">to {{ booking.check_out | date:'MMM d, yyyy' }} ({{ booking.check_out | date:'h:mm a' }})</small>
+                        </div>
                       </div>
                       <div class="col-md-2 text-end">
                         <span class="badge badge-approved rounded-pill">Approved</span>
@@ -180,7 +185,7 @@
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <small class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                        <small class="text-muted">{{ booking.check_in | date:'MMM d' }} ({{ booking.check_in | date:'h:mm a' }}) - {{ booking.check_out | date:'MMM d, yyyy' }} ({{ booking.check_out | date:'h:mm a' }})</small>
                       </div>
                       <div class="col-md-2 text-end">
                         <span class="badge badge-rejected rounded-pill">Rejected</span>

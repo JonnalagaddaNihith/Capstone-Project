@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { PropertyService } from '../../../core/services/property.service';
 import { BookingService } from '../../../core/services/booking.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -30,7 +31,8 @@ import { Property } from '../../../shared/models/property.model';
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxMaterialTimepickerModule
   ],
   templateUrl: './property-details.component.html'
 })
@@ -42,6 +44,8 @@ export class PropertyDetailsComponent implements OnInit {
   // Booking
   checkIn: Date | null = null;
   checkOut: Date | null = null;
+  checkInTime: string = '2:00 PM';
+  checkOutTime: string = '11:00 AM';
   isBooking = false;
   minDate = new Date();
 
@@ -53,6 +57,35 @@ export class PropertyDetailsComponent implements OnInit {
     public authService: AuthService,
     private notificationService: NotificationService
   ) {}
+
+  /**
+   * Parse time string in 12-hour (2:00 PM) or 24-hour (14:00) format
+   * Returns { hours: number, minutes: number }
+   */
+  private parseTime(timeStr: string): { hours: number; minutes: number } {
+    if (!timeStr) return { hours: 0, minutes: 0 };
+    
+    // Check for 12-hour format with AM/PM
+    const ampmMatch = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (ampmMatch) {
+      let hours = parseInt(ampmMatch[1], 10);
+      const minutes = parseInt(ampmMatch[2], 10);
+      const period = ampmMatch[3].toUpperCase();
+      
+      if (period === 'PM' && hours !== 12) {
+        hours += 12;
+      } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+      }
+      
+      return { hours, minutes };
+    }
+    
+    // 24-hour format
+    const parts = timeStr.split(':').map(Number);
+    return { hours: parts[0] || 0, minutes: parts[1] || 0 };
+  }
+
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -93,8 +126,30 @@ export class PropertyDetailsComponent implements OnInit {
 
   get totalDays(): number {
     if (!this.checkIn || !this.checkOut) return 0;
-    const diff = this.checkOut.getTime() - this.checkIn.getTime();
-    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    
+    // Create full datetime by combining date and time
+    const checkInDateTime = new Date(this.checkIn);
+    const checkOutDateTime = new Date(this.checkOut);
+    
+    // Parse check-in time using helper
+    const inTime = this.parseTime(this.checkInTime);
+    checkInDateTime.setHours(inTime.hours, inTime.minutes, 0, 0);
+    
+    // Parse check-out time using helper
+    const outTime = this.parseTime(this.checkOutTime);
+    checkOutDateTime.setHours(outTime.hours, outTime.minutes, 0, 0);
+    
+    // Calculate difference in milliseconds
+    const diffMs = checkOutDateTime.getTime() - checkInDateTime.getTime();
+    
+    // Convert to hours
+    const diffHours = diffMs / (1000 * 60 * 60);
+    
+    // Calculate days - if any extra hours exist, charge for full day
+    // Example: 25 hours = 2 days (1 full day + 1 hour = 2 days charged)
+    const days = Math.ceil(diffHours / 24);
+    
+    return days > 0 ? days : 0;
   }
 
   get totalPrice(): number {
@@ -143,10 +198,21 @@ export class PropertyDetailsComponent implements OnInit {
     }
 
     this.isBooking = true;
+    
+    // Combine date and time for check-in using helper
+    const checkInDateTime = new Date(this.checkIn);
+    const inTime = this.parseTime(this.checkInTime);
+    checkInDateTime.setHours(inTime.hours, inTime.minutes, 0, 0);
+    
+    // Combine date and time for check-out using helper
+    const checkOutDateTime = new Date(this.checkOut);
+    const outTime = this.parseTime(this.checkOutTime);
+    checkOutDateTime.setHours(outTime.hours, outTime.minutes, 0, 0);
+    
     this.bookingService.createBooking({
       property_id: this.property!.id,
-      check_in: this.checkIn.toISOString(),
-      check_out: this.checkOut.toISOString()
+      check_in: checkInDateTime.toISOString(),
+      check_out: checkOutDateTime.toISOString()
     }).subscribe({
       next: (response) => {
         this.isBooking = false;

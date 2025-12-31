@@ -51,19 +51,21 @@
                       <div class="row g-2 small">
                         <div class="col-6">
                           <div class="d-flex align-items-center gap-1 text-muted">
-                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">event</mat-icon>
+                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">login</mat-icon>
                             <div>
                               <div class="text-muted" style="font-size: 10px;">Check-in</div>
                               <div class="text-dark">{{ booking.check_in | date:'MMM d, yyyy' }}</div>
+                              <div class="text-primary fw-medium" style="font-size: 11px;">{{ booking.check_in | date:'h:mm a' }}</div>
                             </div>
                           </div>
                         </div>
                         <div class="col-6">
                           <div class="d-flex align-items-center gap-1 text-muted">
-                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">event</mat-icon>
+                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">logout</mat-icon>
                             <div>
                               <div class="text-muted" style="font-size: 10px;">Check-out</div>
                               <div class="text-dark">{{ booking.check_out | date:'MMM d, yyyy' }}</div>
+                              <div class="text-primary fw-medium" style="font-size: 11px;">{{ booking.check_out | date:'h:mm a' }}</div>
                             </div>
                           </div>
                         </div>
@@ -117,7 +119,7 @@
                         </div>
                         <small class="text-muted d-block mb-3">{{ booking.property_location }}</small>
                         <div class="small mb-3">
-                          <div class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</div>
+                          <div class="text-muted">{{ booking.check_in | date:'MMM d' }} ({{ booking.check_in | date:'h:mm a' }}) - {{ booking.check_out | date:'MMM d, yyyy' }} ({{ booking.check_out | date:'h:mm a' }})</div>
                         </div>
                         <button class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-1" 
                                 (click)="cancelBooking(booking)" [disabled]="cancellingId === booking.id">
@@ -160,7 +162,7 @@
                         </div>
                         <small class="text-muted d-block mb-3">{{ booking.property_location }}</small>
                         <div class="small">
-                          <div class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</div>
+                          <div class="text-muted">{{ booking.check_in | date:'MMM d' }} ({{ booking.check_in | date:'h:mm a' }}) - {{ booking.check_out | date:'MMM d, yyyy' }} ({{ booking.check_out | date:'h:mm a' }})</div>
                         </div>
                       </div>
                     </div>

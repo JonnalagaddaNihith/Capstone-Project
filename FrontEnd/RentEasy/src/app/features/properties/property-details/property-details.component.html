@@ -22,9 +22,122 @@
         </ol>
       </nav>
 
+      <!-- Booking Section - Top Priority -->
+      @if (authService.isTenant() || !authService.isAuthenticated()) {
+        <div class="card border-0 shadow-lg mb-4 animate-slide-up booking-hero-card">
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-lg-8">
+                <h4 class="mb-3 d-flex align-items-center gap-2">
+                  <mat-icon class="text-primary">event_available</mat-icon>
+                  Book Your Stay
+                </h4>
+                <div class="row g-3">
+                  <!-- Check-in Date & Time -->
+                  <div class="col-md-6">
+                    <div class="card bg-light border-0">
+                      <div class="card-body p-3">
+                        <label class="form-label fw-semibold text-muted small mb-2">
+                          <mat-icon class="align-middle me-1" style="font-size: 16px; width: 16px; height: 16px;">login</mat-icon>
+                          CHECK-IN
+                        </label>
+                        <div class="row g-2">
+                          <div class="col-7">
+                            <mat-form-field appearance="outline" class="w-100 compact-field">
+                              <mat-label>Date</mat-label>
+                              <input matInput [matDatepicker]="checkInPicker" [(ngModel)]="checkIn" [min]="minDate">
+                              <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
+                              <mat-datepicker #checkInPicker></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-5">
+                            <mat-form-field appearance="outline" class="w-100 compact-field">
+                              <mat-label>Time</mat-label>
+                              <input matInput [ngxTimepicker]="checkInTimePicker" [(ngModel)]="checkInTime" readonly placeholder="14:00">
+                              <ngx-material-timepicker-toggle matSuffix [for]="checkInTimePicker"></ngx-material-timepicker-toggle>
+                              <ngx-material-timepicker #checkInTimePicker [enableKeyboardInput]="true"></ngx-material-timepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Check-out Date & Time -->
+                  <div class="col-md-6">
+                    <div class="card bg-light border-0">
+                      <div class="card-body p-3">
+                        <label class="form-label fw-semibold text-muted small mb-2">
+                          <mat-icon class="align-middle me-1" style="font-size: 16px; width: 16px; height: 16px;">logout</mat-icon>
+                          CHECK-OUT
+                        </label>
+                        <div class="row g-2">
+                          <div class="col-7">
+                            <mat-form-field appearance="outline" class="w-100 compact-field">
+                              <mat-label>Date</mat-label>
+                              <input matInput [matDatepicker]="checkOutPicker" [(ngModel)]="checkOut" [min]="checkIn || minDate">
+                              <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
+                              <mat-datepicker #checkOutPicker></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-5">
+                            <mat-form-field appearance="outline" class="w-100 compact-field">
+                              <mat-label>Time</mat-label>
+                              <input matInput [ngxTimepicker]="checkOutTimePicker" [(ngModel)]="checkOutTime" readonly placeholder="11:00">
+                              <ngx-material-timepicker-toggle matSuffix [for]="checkOutTimePicker"></ngx-material-timepicker-toggle>
+                              <ngx-material-timepicker #checkOutTimePicker [enableKeyboardInput]="true"></ngx-material-timepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Price & Book Button -->
+              <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="text-center text-lg-end">
+                  <div class="mb-3">
+                    <span class="h2 fw-bold text-primary">₹{{ property.rent_per_day }}</span>
+                    <span class="text-muted">/ day</span>
+                  </div>
+                  @if (totalDays > 0) {
+                    <div class="bg-primary bg-opacity-10 rounded-3 p-3 mb-3">
+                      <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">₹{{ property.rent_per_day }} × {{ totalDays }} days</span>
+                        <span class="fw-semibold">₹{{ totalPrice }}</span>
+                      </div>
+                      <hr class="my-2 border-primary opacity-25">
+                      <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Total</span>
+                        <span class="fw-bold text-primary h5 mb-0">₹{{ totalPrice }}</span>
+                      </div>
+                    </div>
+                  }
+                  <button class="btn btn-primary btn-lg w-100 py-3 shadow" (click)="bookProperty()" [disabled]="isBooking">
+                    @if (isBooking) {
+                      <mat-spinner diameter="24" class="d-inline-block me-2"></mat-spinner> Booking...
+                    } @else {
+                      <mat-icon class="align-middle me-2">book_online</mat-icon>
+                      Request Booking
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="alert alert-info d-flex align-items-center gap-2 mb-4 shadow-sm">
+          <mat-icon>info</mat-icon>
+          <span>As a property owner, you cannot book properties. Switch to a tenant account to make bookings.</span>
+        </div>
+      }
+
       <div class="row g-4">
-        <!-- Left Column - Images & Details -->
-        <div class="col-lg-8 animate-slide-up">
+        <!-- Left Column - Images -->
+        <div class="col-lg-7 animate-slide-up">
           <!-- Image Gallery -->
           <div class="card border-0 shadow-sm mb-4 overflow-hidden">
             <div class="position-relative" style="height: 400px;">
@@ -64,8 +177,10 @@
               </div>
             }
           </div>
+        </div>
 
-          <!-- Property Info -->
+        <!-- Right Column - Property Info -->
+        <div class="col-lg-5 animate-slide-in">
           <div class="card border-0 shadow-sm">
             <div class="card-body p-4">
               <h2 class="mb-3">{{ property.title }}</h2>
@@ -90,7 +205,7 @@
                   <h5 class="mb-3">Amenities</h5>
                   <div class="row g-2">
                     @for (amenity of amenitiesList; track amenity) {
-                      <div class="col-6 col-md-4">
+                      <div class="col-6">
                         <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
                           <mat-icon class="text-success" style="font-size: 18px; width: 18px; height: 18px;">check_circle</mat-icon>
                           <span class="small">{{ amenity }}</span>
@@ -98,65 +213,6 @@
                       </div>
                     }
                   </div>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column - Booking Card -->
-        <div class="col-lg-4 animate-slide-in">
-          <div class="card border-0 shadow-sm sticky-top" style="top: 100px;">
-            <div class="card-body p-4">
-              <div class="text-center mb-4 pb-3 border-bottom">
-                <span class="h3 fw-bold text-primary">₹{{ property.rent_per_day }}</span>
-                <span class="text-muted">/ day</span>
-              </div>
-
-              @if (authService.isTenant() || !authService.isAuthenticated()) {
-                <div class="mb-3">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Check-in</mat-label>
-                    <input matInput [matDatepicker]="checkInPicker" [(ngModel)]="checkIn" [min]="minDate">
-                    <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #checkInPicker></mat-datepicker>
-                  </mat-form-field>
-                </div>
-
-                <div class="mb-3">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Check-out</mat-label>
-                    <input matInput [matDatepicker]="checkOutPicker" [(ngModel)]="checkOut" [min]="checkIn || minDate">
-                    <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #checkOutPicker></mat-datepicker>
-                  </mat-form-field>
-                </div>
-
-                @if (totalDays > 0) {
-                  <div class="bg-light rounded p-3 mb-3">
-                    <div class="d-flex justify-content-between mb-2">
-                      <span class="text-muted">₹{{ property.rent_per_day }} × {{ totalDays }} days</span>
-                      <span>₹{{ totalPrice }}</span>
-                    </div>
-                    <hr class="my-2">
-                    <div class="d-flex justify-content-between fw-bold">
-                      <span>Total</span>
-                      <span class="text-primary">₹{{ totalPrice }}</span>
-                    </div>
-                  </div>
-                }
-
-                <button class="btn btn-primary w-100 py-2" (click)="bookProperty()" [disabled]="isBooking">
-                  @if (isBooking) {
-                    <ng-container><mat-spinner diameter="20"></mat-spinner> Booking...</ng-container>
-                  } @else {
-                    Request Booking
-                  }
-                </button>
-              } @else {
-                <div class="alert alert-info d-flex align-items-start gap-2 mb-0">
-                  <mat-icon>info</mat-icon>
-                  <small>As a property owner, you cannot book properties. Switch to a tenant account to make bookings.</small>
                 </div>
               }
             </div>

@@ -116,7 +116,7 @@
 
     <!-- Recent Booking Requests -->
     @if (pendingBookings.length > 0) {
-      <div class="animate-slide-up">
+      <div class="animate-slide-up mb-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="mb-0">Pending Requests</h5>
           <a routerLink="/owner/bookings" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1">
@@ -132,7 +132,9 @@
                   <small class="text-muted">{{ booking.tenant_name }} • {{ booking.tenant_email }}</small>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                  <small class="text-muted">{{ booking.check_in | date:'MMM d' }} - {{ booking.check_out | date:'MMM d, yyyy' }}</small>
+                  <div class="text-end">
+                    <small class="text-muted d-block">{{ booking.check_in | date:'MMM d' }} ({{ booking.check_in | date:'h:mm a' }}) - {{ booking.check_out | date:'MMM d' }} ({{ booking.check_out | date:'h:mm a' }})</small>
+                  </div>
                   <span class="badge badge-pending rounded-pill">Pending</span>
                 </div>
               </div>
